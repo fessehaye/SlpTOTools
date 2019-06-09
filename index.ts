@@ -12,7 +12,7 @@ smashgg.initialize(process.env.API);
 
 const formatName = (tag) => {return tag.includes('|') ? tag.split('|')[1].trim() : tag}
 const prefix = num => {
-    switch (num % 10) {
+    switch (num) {
         case 1:
             return "st"
         case 2: 

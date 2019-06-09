@@ -4,7 +4,8 @@
   "description": "Tools for publishing VODS to youtube and organization",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node dist/index.js"
+    "folder:gg": "tsc && node dist/index.js",
+    "folder:challonge": "tsc && node dist/challonge.js"
   },
   "repository": {
     "type": "git",
