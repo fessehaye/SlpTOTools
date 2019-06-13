@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import fs from 'fs';
-import { join } from 'path';
 import smashgg from 'smashgg.js';
 import _cliProgress from 'cli-progress';
 const DIR = process.env.DIR;
@@ -11,18 +10,6 @@ Log.silent = true;
 smashgg.initialize(process.env.API);
 
 const formatName = (tag) => {return tag.includes('|') ? tag.split('|')[1].trim() : tag}
-const prefix = num => {
-    switch (num) {
-        case 1:
-            return "st"
-        case 2: 
-            return "nd"
-        case 3:
-            return "rd"
-        default:
-            return "th"
-    }
-}
 
 (async function(){
     let tournamentSlug = 'smash-and-ladders';
@@ -50,15 +37,12 @@ const prefix = num => {
             stats.created++
         }
         else {
-            let numOfDirectories = fs.readdirSync(folder)
-                                    .filter(f => fs.statSync(join(folder, f)).isDirectory()).length;
-            fs.mkdirSync(`${folder}/${numOfDirectories+1}${prefix(numOfDirectories+1)} Set`);
             stats.nested++;
         }
 
     }
     bar.stop();
-    console.log("\nFinished: %d Folders created, %d nested",stats.created,stats.nested);
+    console.log("\nFinished: %d Folders created, %d skipped",stats.created,stats.nested);
     process.exit();
     return true; // exit async
 })()
