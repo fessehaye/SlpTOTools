@@ -7,7 +7,7 @@ const DIR = process.env.DIR;
 const {Event,Log} = smashgg;
 
 Log.silent = true;
-smashgg.initialize(process.env.API);
+smashgg.initialize(process.env.GG_API);
 
 const formatName = (tag) => {return tag.includes('|') ? tag.split('|')[1].trim() : tag}
 
