@@ -29,6 +29,7 @@
     "esm": "^3.2.25",
     "obs-websocket-js": "^3.0.0",
     "rimraf": "^2.6.3",
+    "slp-parser-js": "^2.5.0",
     "smashgg.js": "^4.0.19"
   },
   "devDependencies": {

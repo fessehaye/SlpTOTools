@@ -2,12 +2,14 @@ import OBSWebSocket from "obs-websocket-js";
 import 'dotenv/config';
 import fs from 'fs';
 import { join } from 'path';
-import { execFile } from 'child_process';
+import { exec,execSync } from 'child_process';
+const { default: SlippiGame } = require('slp-parser-js');
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 
 (async function(){
     try {
-        const dolphin = process.env.DOLPHIN;
+        
         const obs = new OBSWebSocket();
         
         await obs.connect({ address: 'localhost:4444',password: 'slippi' });
@@ -22,11 +24,20 @@ import { execFile } from 'child_process';
 
         const folders = fs.readdirSync(DIR).filter(f => fs.statSync(join(DIR, f)).isDirectory());
 
-        const file = `"${DIR}\\${folders[0]}\\queue.json"`.split('\\').join('\\');
-        console.log(file);
-        execFile(dolphin,['-e',process.env.ISO,'-i',file]);
-        folders.forEach( (folder) => {
-            
+        folders.forEach( async (folder) => {
+            const files = fs.readdirSync(`${DIR}\\${folder}`).filter(file => file.includes("slp"));
+            const totalSeconds = files.reduce((acc,curr) => {
+                const game = new SlippiGame(`${DIR}\\${folder}\\${curr}`);
+                const count = Math.ceil(game.getMetadata().lastFrame/60);
+                return acc + count;
+            },0);
+            console.log("calc files");
+            const file = `"${DIR}\\${folders}\\start.bat"`;
+           
+            execSync(file);
+            console.log("running dolpin");
+            await sleep((totalSeconds+30)*1000);
+            execSync('taskkill /F /IM "Dolphin.exe" /T');
 
         })
     }
