@@ -4,9 +4,10 @@ import fs from 'fs';
 import { join } from 'path';
 import { exec,execSync } from 'child_process';
 const { default: SlippiGame } = require('slp-parser-js');
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+const sleep = s => new Promise(resolve => setTimeout(resolve, s*1000));
 const obs = new OBSWebSocket();
 const DIR = process.env.DIR;
+const BUFFER = 10;
 
 
 async function record(folder):Promise<void> {
@@ -27,19 +28,25 @@ async function record(folder):Promise<void> {
 
         exec(file);
         console.log("running dolphin");
-        await obs.send('StartStopRecording');
+        await obs.send('StartRecording');
 
-        // wait 5 additional seconds
-        console.log(`Waiting ${totalSeconds+10} seconds`);
+        // wait additional seconds
+        console.log(`Waiting ${totalSeconds+(BUFFER*files.length)} seconds`);
 
-        await sleep((totalSeconds+10)*1000);
-        await obs.send('StartStopRecording');
+        await sleep(totalSeconds+(BUFFER*files.length));
+        await obs.send('StopRecording');
+
+        //might have to change these sleep timing depending on how slow your computer is
+        await sleep(3);
         execSync('taskkill /F /IM "Dolphin.exe" /T');
+        await sleep(2);
         return Promise.resolve();
     } catch (error) {
         console.log(error);
     }
 }
+
+
 (async function(){
     try {
 
@@ -53,7 +60,7 @@ async function record(folder):Promise<void> {
 
         const folders = fs.readdirSync(DIR).filter(f => fs.statSync(join(DIR, f)).isDirectory());
 
-        const recordTasks = folders.reduce((tasks,folder,index) => {
+        folders.reduce((tasks,folder,index) => {
             return tasks.then(async () => {
                 return record(folder);
             });
