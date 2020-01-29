@@ -28,6 +28,7 @@ async function record(folder):Promise<void> {
 
         exec(file);
         console.log("running dolphin");
+        await sleep(1);
         await obs.send('StartRecording');
 
         // wait additional seconds
@@ -36,8 +37,11 @@ async function record(folder):Promise<void> {
         await sleep(totalSeconds+(BUFFER*files.length));
         await obs.send('StopRecording');
 
+        console.log("Finished Recording Set");
         //might have to change these sleep timing depending on how slow your computer is
         await sleep(3);
+
+        console.log("Clearing Dolphin Instance");
         execSync('taskkill /F /IM "Dolphin.exe" /T');
         await sleep(2);
         return Promise.resolve();
@@ -64,7 +68,10 @@ async function record(folder):Promise<void> {
             return tasks.then(async () => {
                 return record(folder);
             });
-        },Promise.resolve());
+        },Promise.resolve()).then(()=> {
+            console.log("finished all sets!");
+            process.exit();
+        });
         
     }
     catch (error) {
