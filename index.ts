@@ -22,7 +22,7 @@ const prompt = require("prompt-sync")();
             console.log("1: Create Folders from Challonge bracket");
             console.log("2: Create Folders from Smash.gg bracket");
             console.log("3: Filter and setup folder replays");
-            console.log("4: Record Slippi Sessions \n");
+            console.log("4: Record Slippi Sessions ");
             console.log("5: Quit \n");
 
             const choice = prompt("");
