@@ -1,41 +1,46 @@
 {
-  "name": "slptotools",
-  "version": "1.0.0",
-  "description": "Tools for publishing VODS to youtube and organization",
-  "main": "index.js",
-  "scripts": {
-    "folder:gg": "tsc && node dist/index.js",
-    "folder:challonge": "tsc && node dist/challonge.js",
-    "filter": "tsc && node dist/filter.js",
-    "record": "tsc && node dist/record.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fessehaye/SlpTOTools.git"
-  },
-  "author": "Simon Fessehaye",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/fessehaye/SlpTOTools/issues"
-  },
-  "homepage": "https://github.com/fessehaye/SlpTOTools#readme",
-  "dependencies": {
-    "@types/cli-progress": "^3.4.2",
-    "@types/node": "^13.7.0",
-    "apollo-boost": "^0.4.7",
-    "axios": "^0.19.0",
-    "cli-progress": "^2.1.1",
-    "colors": "^1.3.3",
-    "cross-fetch": "^3.0.4",
-    "dotenv": "^8.0.0",
-    "esm": "^3.2.25",
-    "graphql": "^14.6.0",
-    "obs-websocket-js": "^3.0.0",
-    "rimraf": "^2.6.3",
-    "slp-parser-js": "^2.5.0",
-    "smashgg.js": "^4.0.19"
-  },
-  "devDependencies": {
-    "typescript": "^3.5.1"
-  }
+    "name": "slptotools",
+    "version": "1.0.0",
+    "description": "Tools for publishing VODS to youtube and organization",
+    "main": "index.js",
+    "scripts": {
+        "folder:gg": "tsc && node dist/gg.js",
+        "folder:challonge": "tsc && node dist/challonge.js",
+        "filter": "tsc && node dist/filter.js",
+        "record": "tsc && node dist/record.js",
+        "start": "tsc && node dist/index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/fessehaye/SlpTOTools.git"
+    },
+    "author": "Simon Fessehaye",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/fessehaye/SlpTOTools/issues"
+    },
+    "homepage": "https://github.com/fessehaye/SlpTOTools#readme",
+    "dependencies": {
+        "@types/axios": "^0.14.0",
+        "@types/cli-progress": "^3.4.2",
+        "@types/node": "^13.7.0",
+        "@types/prompt-sync": "^4.1.0",
+        "@types/rimraf": "^2.0.3",
+        "apollo-boost": "^0.4.7",
+        "axios": "^0.19.0",
+        "cli-progress": "^2.1.1",
+        "colors": "^1.3.3",
+        "cross-fetch": "^3.0.4",
+        "dotenv": "^8.0.0",
+        "esm": "^3.2.25",
+        "graphql": "^14.6.0",
+        "obs-websocket-js": "^3.0.0",
+        "prompt-sync": "^4.2.0",
+        "rimraf": "^2.6.3",
+        "slp-parser-js": "^2.5.0",
+        "smashgg.js": "^4.0.19"
+    },
+    "devDependencies": {
+        "typescript": "^3.5.1"
+    }
 }

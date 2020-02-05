@@ -9,7 +9,7 @@ const formatRound = round => {
     return round > 0 ? `Winners Round ${round}` : `Losers Round ${round * -1}`;
 };
 
-(async function() {
+async function createFolders() {
     const API = process.env.CHALLONGE_API;
     const eventSlug = process.env.CHALLONGE_EVENT;
     console.log("Getting data from challonge... \n");
@@ -62,4 +62,16 @@ const formatRound = round => {
     );
     process.exit();
     return true; // exit async
+}
+
+(async function() {
+    try {
+        await createFolders();
+        process.exit();
+    } catch (error) {
+        console.log(error);
+        process.exit();
+    }
 })();
+
+export default createFolders;

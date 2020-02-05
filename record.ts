@@ -15,7 +15,7 @@ const parseTime = (time: number): string => {
     return `${min} minutes and ${sec} seconds`;
 };
 
-async function record(folder): Promise<void> {
+export async function record(folder): Promise<void> {
     try {
         const files = fs
             .readdirSync(`${DIR}\\${folder}`)
@@ -59,7 +59,7 @@ async function record(folder): Promise<void> {
     }
 }
 
-(async function() {
+async function recordSession() {
     try {
         await obs.connect({ address: "localhost:4444", password: "slippi" });
 
@@ -73,7 +73,7 @@ async function record(folder): Promise<void> {
             .readdirSync(DIR)
             .filter(f => fs.statSync(join(DIR, f)).isDirectory());
 
-        folders
+        return folders
             .reduce((tasks, folder, index) => {
                 return tasks.then(async () => {
                     return record(folder);
@@ -81,9 +81,22 @@ async function record(folder): Promise<void> {
             }, Promise.resolve())
             .then(() => {
                 console.log("finished all sets!");
-                process.exit();
+                return true;
             });
     } catch (error) {
         console.error(error);
+        return false;
+    }
+}
+
+(async function() {
+    try {
+        await recordSession();
+        process.exit();
+    } catch (error) {
+        console.log(error);
+        process.exit();
     }
 })();
+
+export default recordSession;
