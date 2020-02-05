@@ -3,11 +3,6 @@ import Challonge from "./challonge";
 import Filter from "./filter";
 import Record from "./record";
 
-const readline = require("readline").createInterface({
-    input: process.stdin,
-    output: process.stdout,
-});
-
 const prompt = require("prompt-sync")();
 
 (async function() {
