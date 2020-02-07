@@ -10,9 +10,14 @@ async function filterFolders() {
         .readdirSync(DIR)
         .filter(f => fs.statSync(join(DIR, f)).isDirectory());
 
-    folders.forEach(folder => {
+    const stats = {
+        created: 0,
+        deleted: 0,
+    };
+    for (const folder of folders) {
         const subFolder = `${DIR}\\${folder}`;
         const files = fs.readdirSync(subFolder);
+
         if (files.length) {
             const jsonFile = files.reduce(
                 (query, file) => {
@@ -28,9 +33,7 @@ async function filterFolders() {
                 { mode: "queue", queue: [] }
             );
             const queue = `${subFolder}\\queue.json`;
-            fs.writeFile(queue, JSON.stringify(jsonFile, null, 2), () => {
-                console.log("Queue added!");
-            });
+            fs.writeFileSync(queue, JSON.stringify(jsonFile, null, 2));
 
             const [dolphin, iso] = [process.env.DOLPHIN, process.env.ISO];
 
@@ -38,24 +41,19 @@ async function filterFolders() {
                 `${subFolder}\\start.bat`,
                 `START "" "${dolphin}" -i "${queue}" -e "${iso}"`
             );
+            stats.created++;
         } else {
-            rimraf(subFolder, () => {
-                console.log("Folder Deleted");
-            });
+            rimraf.sync(subFolder);
+            stats.deleted++;
         }
-
-        return Promise.resolve(true);
-    });
-}
-
-(async function() {
-    try {
-        await filterFolders();
-        process.exit();
-    } catch (error) {
-        console.log(error);
-        process.exit();
     }
-})();
+
+    console.log(
+        "\nFinished: %d Folders queued, %d empty folders deleted \n",
+        stats.created,
+        stats.deleted
+    );
+    return true;
+}
 
 export default filterFolders;

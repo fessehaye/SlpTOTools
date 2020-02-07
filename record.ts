@@ -4,6 +4,8 @@ import fs from "fs";
 import { join } from "path";
 import { exec, execSync } from "child_process";
 const { default: SlippiGame } = require("slp-parser-js");
+import ora from "ora";
+
 const sleep = s => new Promise(resolve => setTimeout(resolve, s * 1000));
 const obs = new OBSWebSocket();
 const DIR = process.env.DIR;
@@ -15,7 +17,7 @@ const parseTime = (time: number): string => {
     return `${min} minutes and ${sec} seconds`;
 };
 
-export async function record(folder): Promise<void> {
+export async function record(folder): Promise<boolean> {
     try {
         const files = fs
             .readdirSync(`${DIR}\\${folder}`)
@@ -35,31 +37,30 @@ export async function record(folder): Promise<void> {
 
         exec(file);
         console.log("running dolphin");
-        await sleep(1);
         await obs.send("StartRecording");
 
         // wait additional seconds
-        console.log(
+        const spinner = ora(
             `Waiting ${parseTime(totalSeconds + BUFFER * files.length)}`
-        );
+        ).start();
 
         await sleep(totalSeconds + BUFFER * files.length);
         await obs.send("StopRecording");
 
-        console.log("Finished Recording Set");
+        spinner.succeed();
         //might have to change these sleep timing depending on how slow your computer is
         await sleep(3);
 
         console.log("Clearing Dolphin Instance");
         execSync('taskkill /F /IM "Dolphin.exe" /T');
         await sleep(2);
-        return Promise.resolve();
+        return true;
     } catch (error) {
         console.log(error);
     }
 }
 
-async function recordSession() {
+async function recordSession(): Promise<boolean> {
     try {
         await obs.connect({ address: "localhost:4444", password: "slippi" });
 
@@ -74,29 +75,20 @@ async function recordSession() {
             .filter(f => fs.statSync(join(DIR, f)).isDirectory());
 
         return folders
-            .reduce((tasks, folder, index) => {
+            .reduce((tasks, folder) => {
                 return tasks.then(async () => {
                     return record(folder);
                 });
-            }, Promise.resolve())
+            }, Promise.resolve(true))
             .then(() => {
                 console.log("finished all sets!");
                 return true;
             });
     } catch (error) {
         console.error(error);
+        obs.send("StopRecording");
         return false;
     }
 }
-
-(async function() {
-    try {
-        await recordSession();
-        process.exit();
-    } catch (error) {
-        console.log(error);
-        process.exit();
-    }
-})();
 
 export default recordSession;

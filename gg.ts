@@ -4,6 +4,7 @@ import path from "path";
 import "cross-fetch/polyfill";
 import ApolloClient, { gql } from "apollo-boost";
 import _cliProgress from "cli-progress";
+import ora from "ora";
 const DIR = process.env.DIR;
 
 export const GET_EVENT_COUNT = gql`
@@ -70,7 +71,7 @@ async function createFolders() {
         },
     });
 
-    console.log("Getting data from smash.gg... \n");
+    const spinner = ora("Getting data from smash.gg... \n").start();
 
     const eventInfo = await client.query({
         query: GET_EVENT_COUNT,
@@ -100,6 +101,7 @@ async function createFolders() {
         skipped: 0,
     };
 
+    spinner.succeed();
     const bar = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic);
     bar.start(sets.length, 0);
 
@@ -124,14 +126,5 @@ async function createFolders() {
 
     return true; // exit async
 }
-
-(async function() {
-    try {
-        await createFolders();
-    } catch (error) {
-        console.log(error);
-        process.exit();
-    }
-})();
 
 export default createFolders;

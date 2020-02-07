@@ -60,18 +60,8 @@ async function createFolders() {
         stats.created,
         stats.skipped
     );
-    process.exit();
+
     return true; // exit async
 }
-
-(async function() {
-    try {
-        await createFolders();
-        process.exit();
-    } catch (error) {
-        console.log(error);
-        process.exit();
-    }
-})();
 
 export default createFolders;

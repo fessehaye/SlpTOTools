@@ -24,6 +24,7 @@
         "@types/axios": "^0.14.0",
         "@types/cli-progress": "^3.4.2",
         "@types/node": "^13.7.0",
+        "@types/ora": "^3.2.0",
         "@types/prompt-sync": "^4.1.0",
         "@types/rimraf": "^2.0.3",
         "apollo-boost": "^0.4.7",
@@ -35,12 +36,13 @@
         "esm": "^3.2.25",
         "graphql": "^14.6.0",
         "obs-websocket-js": "^3.0.0",
+        "ora": "^4.0.3",
         "prompt-sync": "^4.2.0",
         "rimraf": "^2.6.3",
         "slp-parser-js": "^2.5.0",
         "smashgg.js": "^4.0.19"
     },
     "devDependencies": {
-        "typescript": "^3.5.1"
+        "typescript": "^3.7.5"
     }
 }
