@@ -8,6 +8,9 @@ This CLI achieves the following:
 * Clears empty generated folders
 * Automates OBS Studio to record a list of sets as individual videos of your choice of format.
 
+Resulting in able to play slippi files as a complete set as an mp4/flv/etc with playback controls!
+
+
 *Warning: Windows machine only at the moment. Eventually I will add support to other OS but I do not have a Mac product so it will probably be the last to get support.*
 
 ## In order to use this tool
@@ -66,3 +69,4 @@ npm start
 - [] Finish Documentation
 - [] Add enviorment variables to record.ts
 - [] Add missing typings
+- [] Add example images to Readme
