@@ -70,3 +70,6 @@ npm start
 - [] Add enviorment variables to record.ts
 - [] Add missing typings
 - [] Add example images to Readme
+- [] Create .env.example
+- [] Youtube Integration (Maybe!)
+
