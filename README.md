@@ -10,7 +10,7 @@ This CLI achieves the following:
 -   Clears empty generated folders
 -   Automates OBS Studio to record a list of sets as individual videos of your choice of format.
 
-Resulting in able to play slippi files as a complete set as an mp4/flv/etc with playback controls!
+Resulting in able to play slippi files as a complete set as an mp4/flv/etc with playback controls! The only thing your are responsible for is remembering which slp files go to each set/folder.
 
 ![example4](./img/ex4.png)
 ![example3](./img/ex3.png)
@@ -72,6 +72,12 @@ Finally go to tools -> websocket server settings to choose your port and passwor
 ```
 npm start
 ```
+
+You can create your own folders for how to divide the slp files or you can use the first two opinions to generate the folders for you if you have a proper API key.
+
+The third opinion creates a queue.json which is necessary to feed the dolphin exe to tell which slp files to play in sequence. It will also create a windows batch file that the program will use to play the dolphin emulation for the recording phase.
+
+Before you start the recording option, make sure OBS is already running!
 
 ## TODO List
 
