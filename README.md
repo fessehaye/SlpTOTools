@@ -12,10 +12,10 @@ This CLI achieves the following:
 
 Resulting in able to play slippi files as a complete set as an mp4/flv/etc with playback controls! The only thing your are responsible for is remembering which slp files go to each set/folder.
 
-![example4](./img/ex4.png)
-![example3](./img/ex3.png)
-![example2](./img/ex2.png)
-![example1](./img/ex1.png)
+![example4](./imgs/ex4.png)
+![example3](./imgs/ex3.png)
+![example2](./imgs/ex2.png)
+![example1](./imgs/ex1.png)
 
 _Warning: Windows machine only at the moment. Eventually I will add support to other OS but I do not have a Mac product so it will probably be the last to get support._
 
