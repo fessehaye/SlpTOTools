@@ -36,7 +36,7 @@ export async function record(folder): Promise<boolean> {
         });
 
         exec(file);
-        console.log("running dolphin");
+        console.log("Running dolphin");
         await obs.send("StartRecording");
 
         // wait additional seconds
@@ -62,12 +62,15 @@ export async function record(folder): Promise<boolean> {
 
 async function recordSession(): Promise<boolean> {
     try {
-        await obs.connect({ address: "localhost:4444", password: "slippi" });
+        await obs.connect({
+            address: `localhost:${process.env.OBS_PORT}`,
+            password: process.env.OBS_PASS,
+        });
 
         console.log("Connection Opened");
 
         await obs.send("SetCurrentScene", {
-            "scene-name": "Slippi",
+            "scene-name": process.env.OBS_SCENE,
         });
 
         const folders = fs
@@ -75,8 +78,9 @@ async function recordSession(): Promise<boolean> {
             .filter(f => fs.statSync(join(DIR, f)).isDirectory());
 
         return folders
-            .reduce((tasks, folder) => {
+            .reduce((tasks, folder, index) => {
                 return tasks.then(async () => {
+                    console.log(`\n${index + 1} / ${folders.length}`);
                     return record(folder);
                 });
             }, Promise.resolve(true))
