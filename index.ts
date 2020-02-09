@@ -14,10 +14,12 @@ const prompt = require("prompt-sync")();
         while (true) {
             console.log("Which option do you need? \n");
 
+            console.log("Folder Generation:");
             console.log("1: Create Folders from Challonge bracket");
-            console.log("2: Create Folders from Smash.gg bracket");
+            console.log("2: Create Folders from Smash.gg bracket \n");
+            console.log("Recording Dolphin:");
             console.log("3: Filter and setup folder replays");
-            console.log("4: Record Slippi Sessions ");
+            console.log("4: Setup and Record Slippi Sessions \n");
             console.log("5: Quit \n");
 
             const choice = prompt("");
@@ -32,6 +34,8 @@ const prompt = require("prompt-sync")();
                     await Filter();
                     break;
                 case "4":
+                    console.log("Setting up recording batch files and queues.");
+                    await Filter();
                     await Record();
                     break;
                 case "5":
