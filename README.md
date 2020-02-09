@@ -68,6 +68,8 @@ Before running the program make sure you create a .env file in the root folder o
 On OBS create a scene for your slippi recording.
 Create a Game Capture or window capture of the dolphin.exe that will be running the replays. Easiest way to catch this is playing a slp file via slippi launcher.
 
+You will also want to go to settings -> output to pick your video format and other output opinions
+
 Finally go to tools -> websocket server settings to choose your port and password.
 
 ## Running Program
