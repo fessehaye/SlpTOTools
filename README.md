@@ -13,9 +13,12 @@ This CLI achieves the following:
 Resulting in able to play slippi files as a complete set as an mp4/flv/etc with playback controls! The only thing your are responsible for is remembering which slp files go to each set/folder.
 
 ![example4](./imgs/ex4.png)
-![example3](./imgs/ex3.png)
-![example2](./imgs/ex2.png)
+
 ![example1](./imgs/ex1.png)
+
+![example3](./imgs/ex3.png)
+
+![example2](./imgs/ex2.png)
 
 _Warning: Windows machine only at the moment. Eventually I will add support to other OS but I do not have a Mac product so it will probably be the last to get support._
 
@@ -65,6 +68,8 @@ Before running the program make sure you create a .env file in the root folder o
 On OBS create a scene for your slippi recording.
 Create a Game Capture or window capture of the dolphin.exe that will be running the replays. Easiest way to catch this is playing a slp file via slippi launcher.
 
+You will also want to go to settings -> output to pick your video format and other output opinions
+
 Finally go to tools -> websocket server settings to choose your port and password.
 
 ## Running Program
@@ -83,7 +88,9 @@ Before you start the recording option, make sure OBS is already running!
 
 -   [x] Finish Documentation (For now!)
 -   [x] Add enviorment variables to record.ts
--   [] Add missing typings
+-   [ ] Add missing typings
 -   [x] Add example images to Readme
 -   [x] Create .env.example
--   [] Youtube Integration (Maybe!)
+-   [ ] Youtube Integration (Maybe!)
+-   [ ] Changing .env needed to config.json
+-   [ ] Making it available via NPM
