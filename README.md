@@ -88,7 +88,9 @@ Before you start the recording option, make sure OBS is already running!
 
 -   [x] Finish Documentation (For now!)
 -   [x] Add enviorment variables to record.ts
--   [] Add missing typings
+-   [ ] Add missing typings
 -   [x] Add example images to Readme
 -   [x] Create .env.example
--   [] Youtube Integration (Maybe!)
+-   [ ] Youtube Integration (Maybe!)
+-   [ ] Changing .env needed to config.json
+-   [ ] Making it available via NPM

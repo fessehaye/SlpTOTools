@@ -5,11 +5,9 @@ import Record from "./record";
 
 const prompt = require("prompt-sync")();
 
-(async function() {
+async function index() {
     try {
-        console.log(
-            "Make sure you setup your .env file and your OBS websocket and settings! \n"
-        );
+        console.log("Make sure you setup your OBS websocket and settings! \n");
 
         while (true) {
             console.log("Which option do you need? \n");
@@ -20,7 +18,9 @@ const prompt = require("prompt-sync")();
             console.log("Recording Dolphin:");
             console.log("3: Filter and setup folder replays");
             console.log("4: Setup and Record Slippi Sessions \n");
-            console.log("5: Quit \n");
+            console.log("5: Upload to Youtube \n");
+
+            console.log("6: Quit \n");
 
             const choice = prompt("");
             switch (choice) {
@@ -39,8 +39,10 @@ const prompt = require("prompt-sync")();
                     await Record();
                     break;
                 case "5":
-                    process.exit();
+                    console.log("coming soon...");
                     break;
+                case "6":
+                    process.exit();
                 default:
                     console.log("choose a real option...");
                     break;
@@ -50,4 +52,6 @@ const prompt = require("prompt-sync")();
         console.log(error);
         process.exit();
     }
-})();
+}
+
+export default index();
