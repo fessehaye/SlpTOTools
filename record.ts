@@ -1,14 +1,14 @@
 import OBSWebSocket from "obs-websocket-js";
-import "dotenv/config";
 import fs from "fs";
 import { join } from "path";
 import { exec, execSync } from "child_process";
 const { default: SlippiGame } = require("slp-parser-js");
 import ora from "ora";
+import { Config } from ".";
 
-const sleep = s => new Promise(resolve => setTimeout(resolve, s * 1000));
+const sleep = (s: number) =>
+    new Promise(resolve => setTimeout(resolve, s * 1000));
 const obs = new OBSWebSocket();
-const DIR = process.env.DIR;
 const BUFFER = 10;
 
 const parseTime = (time: number): string => {
@@ -17,8 +17,23 @@ const parseTime = (time: number): string => {
     return `${min} minutes and ${sec} seconds`;
 };
 
-export async function record(folder): Promise<boolean> {
+const outputTypes: string[] = ["mp4", "flv", "ts", "mov", "mkv", "m3u8"];
+
+export async function record(folder, DIR: string): Promise<boolean> {
     try {
+        const allfiles = fs.readdirSync(`${DIR}\\${folder}`);
+
+        const videoIncluded: boolean = allfiles.some((f: string) => {
+            return outputTypes.some((output: string) => {
+                return f.includes(output);
+            });
+        });
+
+        if (videoIncluded) {
+            console.log("Video file found in directory, skipping this folder!");
+            return true;
+        }
+
         const files = fs
             .readdirSync(`${DIR}\\${folder}`)
             .filter(file => file.includes("slp"));
@@ -60,17 +75,19 @@ export async function record(folder): Promise<boolean> {
     }
 }
 
-async function recordSession(): Promise<boolean> {
+async function recordSession(config: Config): Promise<boolean> {
     try {
+        const DIR = config.DIR;
+
         await obs.connect({
-            address: `localhost:${process.env.OBS_PORT}`,
-            password: process.env.OBS_PASS,
+            address: `localhost:${config.OBS_PORT}`,
+            password: config.OBS_PASS,
         });
 
         console.log("Connection Opened");
 
         await obs.send("SetCurrentScene", {
-            "scene-name": process.env.OBS_SCENE,
+            "scene-name": config.OBS_SCENE,
         });
 
         const folders = fs
@@ -81,11 +98,12 @@ async function recordSession(): Promise<boolean> {
             .reduce((tasks, folder, index) => {
                 return tasks.then(async () => {
                     console.log(`\n${index + 1} / ${folders.length}`);
-                    return record(folder);
+                    return record(folder, DIR);
                 });
             }, Promise.resolve(true))
             .then(() => {
-                console.log("finished all sets!");
+                console.log("Finished all sets!");
+                obs.disconnect();
                 return true;
             });
     } catch (error) {

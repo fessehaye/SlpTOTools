@@ -92,5 +92,10 @@ Before you start the recording option, make sure OBS is already running!
 -   [x] Add example images to Readme
 -   [x] Create .env.example
 -   [ ] Youtube Integration (Maybe!)
--   [ ] Changing .env needed to config.json
+-   [x] Changing .env needed to config.json
 -   [ ] Making it available via NPM
+-   [ ] OBS on record start
+-   [ ] Stop restarting dolphin
+-   [x] Skip if video is found
+-   [ ] Config maker
+-   [ ] import a better cli selector

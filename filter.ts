@@ -1,10 +1,10 @@
-import "dotenv/config";
 import fs from "fs";
 import { join } from "path";
 import rimraf from "rimraf";
+import { Config } from ".";
 
-async function filterFolders() {
-    const DIR = process.env.DIR;
+async function filterFolders(config: Config) {
+    const DIR = config.DIR;
 
     const folders = fs
         .readdirSync(DIR)
@@ -30,12 +30,15 @@ async function filterFolders() {
                     }
                     return query;
                 },
-                { mode: "queue", queue: [] }
+                {
+                    mode: "queue",
+                    queue: [],
+                }
             );
             const queue = `${subFolder}\\queue.json`;
             fs.writeFileSync(queue, JSON.stringify(jsonFile, null, 2));
 
-            const [dolphin, iso] = [process.env.DOLPHIN, process.env.ISO];
+            const [dolphin, iso] = [config.DOLPHIN, config.ISO];
 
             fs.writeFileSync(
                 `${subFolder}\\start.bat`,

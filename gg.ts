@@ -1,11 +1,10 @@
-import "dotenv/config";
 import fs from "fs";
 import path from "path";
 import "cross-fetch/polyfill";
 import ApolloClient, { gql } from "apollo-boost";
 import _cliProgress from "cli-progress";
 import ora from "ora";
-const DIR = process.env.DIR;
+import { Config } from ".";
 
 export const GET_EVENT_COUNT = gql`
     query eventQuery($slug: String) {
@@ -57,15 +56,16 @@ const createTitle = (set: Set): string => {
     return `${set.fullRoundText} ${p1} vs ${p2}`;
 };
 
-async function createFolders() {
-    let tournamentSlug = process.env.GG_SLUG;
+async function createFolders(config: Config) {
+    const tournamentSlug = config.GG_SLUG;
+    const DIR = config.DIR;
 
     const client = new ApolloClient({
         uri: "https://api.smash.gg/gql/alpha",
         request: operation => {
             operation.setContext({
                 headers: {
-                    authorization: `Bearer ${process.env.GG_API}`,
+                    authorization: `Bearer ${config.GG_API}`,
                 },
             });
         },
@@ -105,7 +105,7 @@ async function createFolders() {
     const bar = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic);
     bar.start(sets.length, 0);
 
-    for (var i in sets) {
+    for (let i in sets) {
         bar.update(parseInt(i));
         let title = createTitle(sets[i]);
         let folder = path.join(DIR, title);

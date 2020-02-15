@@ -1,12 +1,36 @@
+#!/usr/bin/env node
+
 import SmashGG from "./gg";
 import Challonge from "./challonge";
 import Filter from "./filter";
 import Record from "./record";
+import fs from "fs";
+
+export interface Config {
+    DIR: string;
+    GG_SLUG?: string;
+    GG_API?: string;
+    CHALLONGE_API?: string;
+    CHALLONGE_EVENT?: string;
+    DOLPHIN?: string;
+    OBS_PORT?: string;
+    ISO?: string;
+    OBS_SCENE?: string;
+    OBS_PASS?: string;
+}
 
 const prompt = require("prompt-sync")();
 
 async function index() {
     try {
+        if (process.argv.length < 3) {
+            throw Error("config json is missing");
+        }
+
+        const rawdata = fs.readFileSync(process.argv[process.argv.length - 1]);
+        const config: Config = JSON.parse(rawdata.toString());
+
+        console.clear();
         console.log("Make sure you setup your OBS websocket and settings! \n");
 
         while (true) {
@@ -25,18 +49,18 @@ async function index() {
             const choice = prompt("");
             switch (choice) {
                 case "1":
-                    await Challonge();
+                    await Challonge(config);
                     break;
                 case "2":
-                    await SmashGG();
+                    await SmashGG(config);
                     break;
                 case "3":
-                    await Filter();
+                    await Filter(config);
                     break;
                 case "4":
                     console.log("Setting up recording batch files and queues.");
-                    await Filter();
-                    await Record();
+                    await Filter(config);
+                    await Record(config);
                     break;
                 case "5":
                     console.log("coming soon...");
@@ -54,4 +78,4 @@ async function index() {
     }
 }
 
-export default index();
+index();

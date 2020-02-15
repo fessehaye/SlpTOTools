@@ -1,17 +1,17 @@
-import "dotenv/config";
 import fs from "fs";
 import _cliProgress from "cli-progress";
 import axios from "axios";
+import { Config } from ".";
 
-const DIR = process.env.DIR;
-
-const formatRound = round => {
+const formatRound = (round: number) => {
     return round > 0 ? `Winners Round ${round}` : `Losers Round ${round * -1}`;
 };
 
-async function createFolders() {
-    const API = process.env.CHALLONGE_API;
-    const eventSlug = process.env.CHALLONGE_EVENT;
+async function createFolders(config: Config) {
+    const DIR = config.DIR;
+
+    const API = config.CHALLONGE_API;
+    const eventSlug = config.CHALLONGE_EVENT;
     console.log("Getting data from challonge... \n");
 
     const matchResponse = await axios.get(
