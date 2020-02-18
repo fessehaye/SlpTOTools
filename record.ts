@@ -11,8 +11,6 @@ const sleep = (s: number) =>
 
 const obs = new OBSWebSocket();
 
-const BUFFER = 10;
-
 const parseTime = (time: number): string => {
     const sec = time % 60;
     const min = Math.floor(time / 60);
@@ -21,7 +19,11 @@ const parseTime = (time: number): string => {
 
 const outputTypes: string[] = ["mp4", "flv", "ts", "mov", "mkv", "m3u8"];
 
-export async function record(folder, DIR: string): Promise<boolean> {
+export async function record(
+    folder,
+    DIR: string,
+    BUFFER: number
+): Promise<boolean> {
     try {
         const allfiles = fs.readdirSync(`${DIR}\\${folder}`);
 
@@ -56,12 +58,11 @@ export async function record(folder, DIR: string): Promise<boolean> {
         console.log("Running dolphin");
         await obs.send("StartRecording");
 
+        const calculatedWait = totalSeconds + BUFFER * files.length;
         // wait additional seconds
-        const spinner = ora(
-            `Waiting ${parseTime(totalSeconds + BUFFER * files.length)}`
-        ).start();
+        const spinner = ora(`Waiting ${parseTime(calculatedWait)}`).start();
 
-        await sleep(totalSeconds + BUFFER * files.length);
+        await sleep(calculatedWait);
         await obs.send("StopRecording");
 
         spinner.succeed();
@@ -80,6 +81,7 @@ export async function record(folder, DIR: string): Promise<boolean> {
 async function recordSession(config: Config): Promise<boolean> {
     try {
         const DIR = config.DIR;
+        const BUFFER = config.OBS_BUFFER | 10;
 
         console.log("Starting OBS...");
 
@@ -112,7 +114,7 @@ async function recordSession(config: Config): Promise<boolean> {
                     // Record Set one after another, wait for the previous recording to resolve
                     // before starting another session
                     console.log(`\n${index + 1} / ${folders.length}`);
-                    return record(folder, DIR);
+                    return record(folder, DIR, BUFFER);
                 });
             }, Promise.resolve(true))
             .then(() => {

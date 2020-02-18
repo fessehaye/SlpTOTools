@@ -8,7 +8,7 @@ import fs from "fs";
 import inquirer from "inquirer";
 
 export interface Config {
-    DIR : string;
+    DIR: string;
     GG_SLUG?: string;
     GG_API?: string;
     CHALLONGE_API?: string;
@@ -19,6 +19,7 @@ export interface Config {
     OBS_SCENE?: string;
     OBS_PASS?: string;
     OBS_EXE?: string;
+    OBS_BUFFER: number;
 }
 
 async function index() {
@@ -28,7 +29,7 @@ async function index() {
         }
 
         const rawdata = fs.readFileSync(process.argv[process.argv.length - 1]);
-        const config : Config = JSON.parse(rawdata.toString());
+        const config: Config = JSON.parse(rawdata.toString());
 
         console.clear();
         console.log("Make sure you setup your OBS websocket and settings! \n");
@@ -36,23 +37,25 @@ async function index() {
         while (true) {
             const choice = await inquirer.prompt([
                 {
-                    type: 'list',
-                    name: 'option',
-                    message: 'Which option do you need?',
+                    type: "list",
+                    name: "option",
+                    message: "Which option do you need?",
                     choices: [
-                        'Create Folders from Challonge bracket', 'Create Folders from Smash.gg bracket', new inquirer.Separator(),
-                        'Filter and setup folder replays',
-                        'Setup and Record Slippi Sessions',
+                        "Create Folders from Challonge bracket",
+                        "Create Folders from Smash.gg bracket",
                         new inquirer.Separator(),
-                        'Upload to Youtube',
+                        "Filter and setup folder replays",
+                        "Setup and Record Slippi Sessions",
                         new inquirer.Separator(),
-                        'Quit',
-                        new inquirer.Separator()
-                    ]
-                }
+                        "Upload to Youtube",
+                        new inquirer.Separator(),
+                        "Quit",
+                        new inquirer.Separator(),
+                    ],
+                },
             ]);
 
-            console.log(choice.option)
+            console.log(choice.option);
 
             switch (choice.option) {
                 case "Create Folders from Challonge bracket":
