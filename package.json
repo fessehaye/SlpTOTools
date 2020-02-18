@@ -21,7 +21,7 @@
         "smash.gg"
     ],
     "scripts": {
-        "start": "ts-node index.ts",
+        "start": "ts-node src/index.ts",
         "create": "npm run build && npm run test",
         "build": "tsc -p .",
         "test": "npm i -g",
@@ -54,6 +54,8 @@
         "chalk": "^3.0.0",
         "cli-progress": "^2.1.1",
         "cross-fetch": "^3.0.4",
+        "google-auth-library": "^5.9.2",
+        "googleapis": "^47.0.0",
         "graphql": "^14.6.0",
         "inquirer": "^7.0.4",
         "obs-websocket-js": "^3.0.0",

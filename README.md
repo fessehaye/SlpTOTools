@@ -22,7 +22,7 @@ _Warning: Windows machine only at the moment._
 
 ## In order to use this tool
 
--   Please install a somewhat modern version NodeJS. - https://nodejs.org/en/
+-   Install NodeJS. - https://nodejs.org/en/
 -   Download OBS Studio - https://obsproject.com/
 -   Download OBS websocket - https://github.com/Palakis/obs-websocket/releases
 -   Download Slippi Launcher - https://slippi.gg/downloads
@@ -82,7 +82,7 @@ Before you start the recording option, make sure OBS is already running!
 
 -   [ ] Finish Documentation
 -   [x] Add enviorment variables to record.ts
--   [ ] Add missing typings
+-   [x] Add missing typings
 -   [x] Add example images to Readme
 -   [x] Create .env.example
 -   [ ] Youtube Integration
@@ -91,6 +91,6 @@ Before you start the recording option, make sure OBS is already running!
 -   [x] OBS on record start
 -   [ ] Stop restarting dolphin
 -   [x] Skip if video is found
--   [ ] Config maker
+-   [x] Config maker
 -   [x] import a better cli selector
 -   [x] Add config Buffer
