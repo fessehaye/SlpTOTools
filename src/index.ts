@@ -5,6 +5,8 @@ import Challonge from "./challonge";
 import Filter from "./filter";
 import Record from "./record";
 import ConfigGenerator from "./config";
+import Upload from "./youtube";
+
 import fs from "fs";
 import inquirer from "inquirer";
 import chalk from "chalk";
@@ -79,7 +81,7 @@ async function index(): Promise<void> {
                     await Record(config);
                     break;
                 case "Upload to Youtube":
-                    console.log(chalk.red("Coming soon..."));
+                    await Upload(config);
                     break;
                 case "Quit":
                     process.exit();

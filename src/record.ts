@@ -18,7 +18,7 @@ const parseTime = (time: number): string => {
     return `${min} minutes and ${sec} seconds`;
 };
 
-const outputTypes: string[] = ["mp4", "flv", "ts", "mov", "mkv", "m3u8"];
+export const outputTypes: string[] = ["mp4", "flv", "ts", "mov", "mkv", "m3u8"];
 
 export async function record(
     folder: string,

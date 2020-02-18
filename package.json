@@ -62,6 +62,7 @@
         "ora": "^4.0.3",
         "prompt-sync": "^4.2.0",
         "rimraf": "^2.6.3",
-        "slp-parser-js": "^2.5.0"
+        "slp-parser-js": "^2.5.0",
+        "youtube-video-api": "^0.3.7"
     }
 }
