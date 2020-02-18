@@ -1,4 +1,4 @@
-# SlpTOTools
+# slp-recorder
 
 Tools for publishing VODS to youtube and organization
 
@@ -18,8 +18,6 @@ Resulting in able to play slippi files as a complete set as an mp4/flv/etc with 
 
 ![example3](./imgs/ex3.png)
 
-![example2](./imgs/ex2.png)
-
 _Warning: Windows machine only at the moment. Eventually I will add support to other OS but I do not have a Mac product so it will probably be the last to get support._
 
 ## In order to use this tool
@@ -32,14 +30,12 @@ _Warning: Windows machine only at the moment. Eventually I will add support to o
 ## Installation
 
 ```
-npm install
+npm install -g slp-recorder
 ```
 
-Before using for the first time.
+## Config JSON
 
-## Enviormental Variables
-
-Before running the program make sure you create a .env file in the root folder of the project. Depending on your needs you will need specific variables to be included. Use the .env.example file as a template and copy the correct values.
+Before running the program make sure you create a json file with the following keys. Depending on your needs you might want to skill some variables to be declared. Use the .env.example file as a template and copy the correct values.
 
 ### Needed for everything
 
@@ -55,17 +51,15 @@ Before running the program make sure you create a .env file in the root folder o
 
 ### Needed for Smash.gg Folder generation
 
--   GG_SLUG = slug for the event you are targeting ex: tournament/smash-uofa-46-jan-24/event/melee-singles
 -   GG_API = Smash.gg API Key need to request key from smash.gg staff
 
 ### Needed for challonge Folder generation
 
--   CHALLONGE_EVENT = slug for the event you are targeting ex: 34rovbp3
 -   CHALLONGE_API = challonge API Key, check account settings on challonge account
 
 ## Setting up the OBS Scene
 
-On OBS create a scene for your slippi recording.
+On OBS, create a scene for your slippi recording.
 Create a Game Capture or window capture of the dolphin.exe that will be running the replays. Easiest way to catch this is playing a slp file via slippi launcher.
 
 You will also want to go to settings -> output to pick your video format and other output opinions
@@ -75,7 +69,7 @@ Finally go to tools -> websocket server settings to choose your port and passwor
 ## Running Program
 
 ```
-npm start
+slp-recorder <config.json>
 ```
 
 You can create your own folders for how to divide the slp files or you can use the first two opinions to generate the folders for you if you have a proper API key.
@@ -86,16 +80,17 @@ Before you start the recording option, make sure OBS is already running!
 
 ## TODO List
 
--   [x] Finish Documentation (For now!)
+-   [ ] Finish Documentation
 -   [x] Add enviorment variables to record.ts
 -   [ ] Add missing typings
 -   [x] Add example images to Readme
 -   [x] Create .env.example
--   [ ] Youtube Integration (Maybe!)
+-   [ ] Youtube Integration
 -   [x] Changing .env needed to config.json
--   [ ] Making it available via NPM
+-   [x] Making it available via NPM
 -   [x] OBS on record start
 -   [ ] Stop restarting dolphin
 -   [x] Skip if video is found
 -   [ ] Config maker
 -   [x] import a better cli selector
+-   [x] Add config Buffer
