@@ -1,12 +1,13 @@
 import fs from "fs";
 import { join } from "path";
 import rimraf from "rimraf";
+import chalk from "chalk";
 import { Config } from ".";
 
-type Stats {
+type Stats = {
     created: number;
     deleted: number;
-}
+};
 
 async function filterFolders(config: Config): Promise<boolean> {
     const DIR: string = config.DIR;
@@ -58,7 +59,9 @@ async function filterFolders(config: Config): Promise<boolean> {
     }
 
     console.log(
-        "\nFinished: %d Folders queued, %d empty folders deleted \n",
+        chalk.green(
+            "\nFinished: %d Folders queued, %d empty folders deleted \n"
+        ),
         stats.created,
         stats.deleted
     );

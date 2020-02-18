@@ -4,11 +4,12 @@ import axios from "axios";
 import { Config } from ".";
 import ora from "ora";
 import inquirer from "inquirer";
+import chalk from "chalk";
 
-type Stats {
+type Stats = {
     created: number;
     skipped: number;
-}
+};
 
 const formatRound = (round: number) => {
     return round > 0 ? `Winners Round ${round}` : `Losers Round ${round * -1}`;
@@ -27,7 +28,7 @@ async function createFolders(config: Config): Promise<boolean> {
         const answers = await inquirer.prompt([
             {
                 name: "slug",
-                message: "Please provide Challonge Event Slug:",
+                message: chalk.blue("Please provide Challonge Event Slug:"),
             },
         ]);
 
@@ -83,7 +84,7 @@ async function createFolders(config: Config): Promise<boolean> {
     bar.update(matches.length);
     bar.stop();
     console.log(
-        "\nFinished: %d Folders created, %d skipped",
+        chalk.green("\nFinished: %d Folders created, %d skipped"),
         stats.created,
         stats.skipped
     );

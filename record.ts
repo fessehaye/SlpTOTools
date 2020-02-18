@@ -5,6 +5,7 @@ import { exec, execSync, execFile } from "child_process";
 import SlippiGame from "slp-parser-js";
 import ora from "ora";
 import { Config } from ".";
+import chalk from "chalk";
 
 const sleep = (s: number) =>
     new Promise(resolve => setTimeout(resolve, s * 1000));
@@ -20,12 +21,13 @@ const parseTime = (time: number): string => {
 const outputTypes: string[] = ["mp4", "flv", "ts", "mov", "mkv", "m3u8"];
 
 export async function record(
-    folder,
+    folder: string,
     DIR: string,
     BUFFER: number
 ): Promise<boolean> {
     try {
-        const allfiles: string[] = fs.readdirSync(`${DIR}\\${folder}`);
+        const currentDirectory: string = `${DIR}\\${folder}`;
+        const allfiles: string[] = fs.readdirSync(currentDirectory);
 
         const videoIncluded: boolean = allfiles.some((f: string) => {
             return outputTypes.some((output: string) => {
@@ -34,7 +36,12 @@ export async function record(
         });
 
         if (videoIncluded) {
-            console.log("Video file found in directory, skipping this folder!");
+            console.log(
+                chalk.yellow(
+                    `Video file found in ${currentDirectory}, skipping this folder!`
+                )
+            );
+
             return true;
         }
 
@@ -48,7 +55,7 @@ export async function record(
             return acc + count;
         }, 0);
 
-        console.log(`${folder} is being played`);
+        console.log(chalk.bold.bgGreen(`${folder} is being played`));
         const file = `"${DIR}\\${folder}\\start.bat"`;
 
         await obs.send("SetRecordingFolder", {
@@ -68,12 +75,13 @@ export async function record(
         spinner.succeed();
         //might have to change these sleep timing depending on how slow your computer is
         await sleep(3);
+        console.log(chalk.green("Recording Saved!"));
 
         execSync('taskkill /F /IM "Dolphin.exe" /T');
         await sleep(2);
         return true;
     } catch (error) {
-        console.log(error);
+        console.error(chalk.red(error));
     }
 }
 
@@ -98,8 +106,6 @@ async function recordSession(config: Config): Promise<boolean> {
             password: config.OBS_PASS,
         });
 
-        console.log("Connection Opened");
-
         await obs.send("SetCurrentScene", { "scene-name": config.OBS_SCENE });
 
         const folders = fs
@@ -112,17 +118,17 @@ async function recordSession(config: Config): Promise<boolean> {
                 return tasks.then(async () => {
                     // Record Set one after another, wait for the previous recording to resolve
                     // before starting another session
-                    console.log(`\n${index + 1} / ${folders.length}`);
+                    console.log(`\n${index + 1}/${folders.length}`);
                     return record(folder, DIR, BUFFER);
                 });
             }, Promise.resolve(true))
             .then(() => {
-                console.log("Finished all sets! \n");
+                console.log(chalk.green("Finished all sets! \n"));
                 obs.disconnect();
                 return true;
             });
     } catch (error) {
-        console.error(error);
+        console.error(chalk.red(error));
         obs.send("StopRecording");
         return false;
     }

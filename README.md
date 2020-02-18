@@ -1,6 +1,6 @@
-# slp-recorder
+# `slp-recorder`
 
-Tools for publishing VODS to youtube and organization
+Tools for converting slp files to video
 
 This CLI achieves the following:
 
@@ -18,7 +18,7 @@ Resulting in able to play slippi files as a complete set as an mp4/flv/etc with 
 
 ![example3](./imgs/ex3.png)
 
-_Warning: Windows machine only at the moment. Eventually I will add support to other OS but I do not have a Mac product so it will probably be the last to get support._
+_Warning: Windows machine only at the moment._
 
 ## In order to use this tool
 

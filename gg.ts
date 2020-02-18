@@ -6,6 +6,7 @@ import _cliProgress from "cli-progress";
 import ora from "ora";
 import { Config } from ".";
 import inquirer from "inquirer";
+import chalk from "chalk";
 
 type EntrantData = {
     entrant: { name: string };
@@ -16,10 +17,10 @@ type Set = {
     slots: EntrantData[];
 };
 
-type Stats {
+type Stats = {
     created: number;
     skipped: number;
-}
+};
 
 const GET_EVENT_COUNT = gql`
     query eventQuery($slug: String) {
@@ -75,7 +76,7 @@ async function createFolders(config: Config): Promise<boolean> {
         const answers = await inquirer.prompt([
             {
                 name: "slug",
-                message: "Please provide Smash.gg Event Slug:",
+                message: chalk.blue("Please provide Smash.gg Event Slug:"),
             },
         ]);
 
@@ -120,7 +121,7 @@ async function createFolders(config: Config): Promise<boolean> {
         return [...prev, ...curr.data.event.sets.nodes];
     }, []);
 
-    const stats:Stats = {
+    const stats: Stats = {
         created: 0,
         skipped: 0,
     };
@@ -143,7 +144,7 @@ async function createFolders(config: Config): Promise<boolean> {
     }
     bar.stop();
     console.log(
-        "\nFinished: %d Folders created, %d skipped",
+        chalk.green("\nFinished: %d Folders created, %d skipped"),
         stats.created,
         stats.skipped
     );

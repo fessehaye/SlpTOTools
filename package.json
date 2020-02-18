@@ -1,7 +1,7 @@
 {
     "name": "slp-recorder",
-    "version": "1.0.3",
-    "description": "Tools for publishing VODS to youtube and organization",
+    "version": "1.1.0",
+    "description": "Tools for converting slp files to video",
     "main": "./dist/index.js",
     "bin": {
         "slp-recorder": "./dist/index.js"
@@ -11,6 +11,14 @@
     },
     "files": [
         "dist/"
+    ],
+    "keywords": [
+        "cli",
+        "slp-recorder",
+        "project slippi",
+        "obs",
+        "challonge",
+        "smash.gg"
     ],
     "scripts": {
         "start": "ts-node index.ts",
@@ -32,25 +40,26 @@
     "devDependencies": {
         "@types/axios": "^0.14.0",
         "@types/cli-progress": "^3.4.2",
+        "@types/inquirer": "^6.5.0",
         "@types/node": "^13.7.0",
         "@types/ora": "^3.2.0",
         "@types/prompt-sync": "^4.1.0",
         "@types/rimraf": "^2.0.3",
         "ts-node": "^8.6.2",
-        "typescript": "^3.7.5",
-        "@types/inquirer": "^6.5.0"
+        "typescript": "^3.7.5"
     },
     "dependencies": {
         "apollo-boost": "^0.4.7",
         "axios": "^0.19.0",
+        "chalk": "^3.0.0",
         "cli-progress": "^2.1.1",
         "cross-fetch": "^3.0.4",
         "graphql": "^14.6.0",
+        "inquirer": "^7.0.4",
         "obs-websocket-js": "^3.0.0",
         "ora": "^4.0.3",
         "prompt-sync": "^4.2.0",
         "rimraf": "^2.6.3",
-        "slp-parser-js": "^2.5.0",
-        "inquirer": "^7.0.4"
+        "slp-parser-js": "^2.5.0"
     }
 }

@@ -6,6 +6,7 @@ import Filter from "./filter";
 import Record from "./record";
 import fs from "fs";
 import inquirer from "inquirer";
+import chalk from "chalk";
 
 export interface Config {
     DIR: string;
@@ -25,7 +26,7 @@ export interface Config {
 async function index(): Promise<void> {
     try {
         if (process.argv.length < 3) {
-            throw Error("config json is missing");
+            throw Error("Config json is missing");
         }
 
         const rawdata: Buffer = fs.readFileSync(
@@ -34,14 +35,18 @@ async function index(): Promise<void> {
         const config: Config = JSON.parse(rawdata.toString());
 
         console.clear();
-        console.log("Make sure you setup your OBS websocket and settings! \n");
+        console.log(
+            chalk.yellow(
+                "Make sure you setup your OBS websocket and settings! \n"
+            )
+        );
 
         while (true) {
             const choice = await inquirer.prompt([
                 {
                     type: "list",
                     name: "option",
-                    message: "Which option do you need?",
+                    message: chalk.blue("Which option do you need?"),
                     choices: [
                         "Create Folders from Challonge bracket",
                         "Create Folders from Smash.gg bracket",
@@ -57,8 +62,6 @@ async function index(): Promise<void> {
                 },
             ]);
 
-            console.log(choice.option);
-
             switch (choice.option) {
                 case "Create Folders from Challonge bracket":
                     await Challonge(config);
@@ -70,12 +73,11 @@ async function index(): Promise<void> {
                     await Filter(config);
                     break;
                 case "Setup and Record Slippi Sessions":
-                    console.log("Setting up recording batch files and queues.");
                     await Filter(config);
                     await Record(config);
                     break;
                 case "Upload to Youtube":
-                    console.log("coming soon...");
+                    console.log(chalk.red("Coming soon..."));
                     break;
                 case "Quit":
                     process.exit();
@@ -84,7 +86,7 @@ async function index(): Promise<void> {
             }
         }
     } catch (error) {
-        console.log(error);
+        console.error(chalk.red(error));
         process.exit();
     }
 }
