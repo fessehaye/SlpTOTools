@@ -4,6 +4,7 @@ import SmashGG from "./gg";
 import Challonge from "./challonge";
 import Filter from "./filter";
 import Record from "./record";
+import ConfigGenerator from "./config";
 import fs from "fs";
 import inquirer from "inquirer";
 import chalk from "chalk";
@@ -26,7 +27,8 @@ export interface Config {
 async function index(): Promise<void> {
     try {
         if (process.argv.length < 3) {
-            throw Error("Config json is missing");
+            console.log(chalk.red("Config json is missing"));
+            await ConfigGenerator();
         }
 
         const rawdata: Buffer = fs.readFileSync(
@@ -37,7 +39,7 @@ async function index(): Promise<void> {
         console.clear();
         console.log(
             chalk.yellow(
-                "Make sure you setup your OBS websocket and settings! \n"
+                "Make sure you setup your OBS websocket and settings. \n Make sure you close any instances of OBS and dolphin beforehand. \n"
             )
         );
 

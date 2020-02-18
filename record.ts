@@ -123,7 +123,7 @@ async function recordSession(config: Config): Promise<boolean> {
                 });
             }, Promise.resolve(true))
             .then(() => {
-                console.log(chalk.green("Finished all sets! \n"));
+                console.log(chalk.green("\nFinished all sets! \n"));
                 obs.disconnect();
                 return true;
             });
