@@ -3,6 +3,7 @@ import _cliProgress from "cli-progress";
 import axios from "axios";
 import { Config } from ".";
 import ora from "ora";
+import inquirer from "inquirer";
 
 const formatRound = (round: number) => {
     return round > 0 ? `Winners Round ${round}` : `Losers Round ${round * -1}`;
@@ -11,8 +12,26 @@ const formatRound = (round: number) => {
 async function createFolders(config: Config) {
     const DIR = config.DIR;
 
+    let eventSlug;
+
+    if (!config.CHALLONGE_API) {
+        throw Error("Challonge API Key is missing, please add it your config");
+    }
+
+    if (!config.CHALLONGE_EVENT) {
+        const answers = await inquirer.prompt([
+            {
+                name: "slug",
+                message: "Please provide Challonge Event Slug:",
+            },
+        ]);
+
+        eventSlug = answers.slug;
+    } else {
+        eventSlug = config.CHALLONGE_EVENT;
+    }
+
     const API = config.CHALLONGE_API;
-    const eventSlug = config.CHALLONGE_EVENT;
     const spinner = ora("Getting data from challonge... \n").start();
 
     const matchResponse = await axios.get(

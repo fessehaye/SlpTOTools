@@ -5,6 +5,7 @@ import ApolloClient, { gql } from "apollo-boost";
 import _cliProgress from "cli-progress";
 import ora from "ora";
 import { Config } from ".";
+import inquirer from "inquirer";
 
 export const GET_EVENT_COUNT = gql`
     query eventQuery($slug: String) {
@@ -56,9 +57,26 @@ const createTitle = (set: Set): string => {
     return `${set.fullRoundText} ${p1} vs ${p2}`;
 };
 
-async function createFolders(config: Config) {
-    const tournamentSlug = config.GG_SLUG;
+async function createFolders(config: Config): Promise<boolean> {
+    let tournamentSlug;
     const DIR = config.DIR;
+
+    if (!config.GG_API) {
+        throw Error("Smash.gg API Key is missing please add it your config");
+    }
+
+    if (!config.GG_SLUG) {
+        const answers = await inquirer.prompt([
+            {
+                name: "slug",
+                message: "Please provide Smash.gg Event Slug:",
+            },
+        ]);
+
+        tournamentSlug = answers.slug;
+    } else {
+        tournamentSlug = config.GG_SLUG;
+    }
 
     const client = new ApolloClient({
         uri: "https://api.smash.gg/gql/alpha",
