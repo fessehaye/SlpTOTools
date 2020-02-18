@@ -25,7 +25,7 @@ export async function record(
     BUFFER: number
 ): Promise<boolean> {
     try {
-        const allfiles = fs.readdirSync(`${DIR}\\${folder}`);
+        const allfiles: string[] = fs.readdirSync(`${DIR}\\${folder}`);
 
         const videoIncluded: boolean = allfiles.some((f: string) => {
             return outputTypes.some((output: string) => {
@@ -38,9 +38,10 @@ export async function record(
             return true;
         }
 
-        const files = fs
+        const files: string[] = fs
             .readdirSync(`${DIR}\\${folder}`)
             .filter(file => file.includes("slp"));
+
         const totalSeconds = files.reduce((acc, curr) => {
             const game = new SlippiGame(`${DIR}\\${folder}\\${curr}`);
             const count = Math.ceil(game.getMetadata().lastFrame / 60);
@@ -55,10 +56,9 @@ export async function record(
         });
 
         exec(file);
-        console.log("Running dolphin");
         await obs.send("StartRecording");
 
-        const calculatedWait = totalSeconds + BUFFER * files.length;
+        const calculatedWait: number = totalSeconds + BUFFER * files.length;
         // wait additional seconds
         const spinner = ora(`Waiting ${parseTime(calculatedWait)}`).start();
 
@@ -69,7 +69,6 @@ export async function record(
         //might have to change these sleep timing depending on how slow your computer is
         await sleep(3);
 
-        console.log("Clearing Dolphin Instance");
         execSync('taskkill /F /IM "Dolphin.exe" /T');
         await sleep(2);
         return true;

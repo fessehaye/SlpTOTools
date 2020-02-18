@@ -22,13 +22,15 @@ export interface Config {
     OBS_BUFFER: number;
 }
 
-async function index() {
+async function index(): Promise<void> {
     try {
         if (process.argv.length < 3) {
             throw Error("config json is missing");
         }
 
-        const rawdata = fs.readFileSync(process.argv[process.argv.length - 1]);
+        const rawdata: Buffer = fs.readFileSync(
+            process.argv[process.argv.length - 1]
+        );
         const config: Config = JSON.parse(rawdata.toString());
 
         console.clear();

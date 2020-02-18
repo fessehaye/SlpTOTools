@@ -7,7 +7,21 @@ import ora from "ora";
 import { Config } from ".";
 import inquirer from "inquirer";
 
-export const GET_EVENT_COUNT = gql`
+type EntrantData = {
+    entrant: { name: string };
+};
+
+type Set = {
+    fullRoundText: string;
+    slots: EntrantData[];
+};
+
+type Stats {
+    created: number;
+    skipped: number;
+}
+
+const GET_EVENT_COUNT = gql`
     query eventQuery($slug: String) {
         event(slug: $slug) {
             sets(sortType: STANDARD, perPage: 20) {
@@ -20,7 +34,7 @@ export const GET_EVENT_COUNT = gql`
     }
 `;
 
-export const GET_EVENT_SETS = gql`
+const GET_EVENT_SETS = gql`
     query eventQuery($slug: String, $page: Int) {
         event(slug: $slug) {
             sets(sortType: STANDARD, perPage: 20, page: $page) {
@@ -37,14 +51,6 @@ export const GET_EVENT_SETS = gql`
     }
 `;
 
-type EntrantData = {
-    entrant: { name: string };
-};
-type Set = {
-    fullRoundText: string;
-    slots: EntrantData[];
-};
-
 const formatName = (tag: string): string => {
     return tag.includes("|") ? tag.split("|")[1].trim() : tag;
 };
@@ -58,8 +64,8 @@ const createTitle = (set: Set): string => {
 };
 
 async function createFolders(config: Config): Promise<boolean> {
-    let tournamentSlug;
-    const DIR = config.DIR;
+    let tournamentSlug: string;
+    const DIR: string = config.DIR;
 
     if (!config.GG_API) {
         throw Error("Smash.gg API Key is missing please add it your config");
@@ -114,7 +120,7 @@ async function createFolders(config: Config): Promise<boolean> {
         return [...prev, ...curr.data.event.sets.nodes];
     }, []);
 
-    const stats = {
+    const stats:Stats = {
         created: 0,
         skipped: 0,
     };

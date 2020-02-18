@@ -1,6 +1,6 @@
 {
     "name": "slp-recorder",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Tools for publishing VODS to youtube and organization",
     "main": "./dist/index.js",
     "bin": {

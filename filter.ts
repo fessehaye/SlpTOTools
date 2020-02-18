@@ -3,17 +3,23 @@ import { join } from "path";
 import rimraf from "rimraf";
 import { Config } from ".";
 
-async function filterFolders(config: Config) {
-    const DIR = config.DIR;
+type Stats {
+    created: number;
+    deleted: number;
+}
 
-    const folders = fs
+async function filterFolders(config: Config): Promise<boolean> {
+    const DIR: string = config.DIR;
+
+    const folders: string[] = fs
         .readdirSync(DIR)
         .filter(f => fs.statSync(join(DIR, f)).isDirectory());
 
-    const stats = {
+    const stats: Stats = {
         created: 0,
         deleted: 0,
     };
+
     for (const folder of folders) {
         const subFolder = `${DIR}\\${folder}`;
         const files = fs.readdirSync(subFolder);

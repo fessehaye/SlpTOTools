@@ -5,14 +5,19 @@ import { Config } from ".";
 import ora from "ora";
 import inquirer from "inquirer";
 
+type Stats {
+    created: number;
+    skipped: number;
+}
+
 const formatRound = (round: number) => {
     return round > 0 ? `Winners Round ${round}` : `Losers Round ${round * -1}`;
 };
 
-async function createFolders(config: Config) {
+async function createFolders(config: Config): Promise<boolean> {
     const DIR = config.DIR;
 
-    let eventSlug;
+    let eventSlug: string;
 
     if (!config.CHALLONGE_API) {
         throw Error("Challonge API Key is missing, please add it your config");
@@ -31,8 +36,8 @@ async function createFolders(config: Config) {
         eventSlug = config.CHALLONGE_EVENT;
     }
 
-    const API = config.CHALLONGE_API;
-    const spinner = ora("Getting data from challonge... \n").start();
+    const API: string = config.CHALLONGE_API;
+    const spinner: ora.Ora = ora("Getting data from challonge... \n").start();
 
     const matchResponse = await axios.get(
         `https://api.challonge.com/v1/tournaments/${eventSlug}/matches.json?api_key=${API}`
@@ -44,7 +49,7 @@ async function createFolders(config: Config) {
 
     spinner.succeed();
 
-    const stats = {
+    const stats: Stats = {
         created: 0,
         skipped: 0,
     };
