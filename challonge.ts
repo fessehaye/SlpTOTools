@@ -2,6 +2,7 @@ import fs from "fs";
 import _cliProgress from "cli-progress";
 import axios from "axios";
 import { Config } from ".";
+import ora from "ora";
 
 const formatRound = (round: number) => {
     return round > 0 ? `Winners Round ${round}` : `Losers Round ${round * -1}`;
@@ -12,7 +13,7 @@ async function createFolders(config: Config) {
 
     const API = config.CHALLONGE_API;
     const eventSlug = config.CHALLONGE_EVENT;
-    console.log("Getting data from challonge... \n");
+    const spinner = ora("Getting data from challonge... \n").start();
 
     const matchResponse = await axios.get(
         `https://api.challonge.com/v1/tournaments/${eventSlug}/matches.json?api_key=${API}`
@@ -21,6 +22,8 @@ async function createFolders(config: Config) {
     const partResponse = await axios.get(
         `https://api.challonge.com/v1/tournaments/${eventSlug}/participants.json?api_key=${API}`
     );
+
+    spinner.succeed();
 
     const stats = {
         created: 0,

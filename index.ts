@@ -5,9 +5,10 @@ import Challonge from "./challonge";
 import Filter from "./filter";
 import Record from "./record";
 import fs from "fs";
+import inquirer from "inquirer";
 
 export interface Config {
-    DIR: string;
+    DIR : string;
     GG_SLUG?: string;
     GG_API?: string;
     CHALLONGE_API?: string;
@@ -17,9 +18,8 @@ export interface Config {
     ISO?: string;
     OBS_SCENE?: string;
     OBS_PASS?: string;
+    OBS_EXE?: string;
 }
-
-const prompt = require("prompt-sync")();
 
 async function index() {
     try {
@@ -28,47 +28,53 @@ async function index() {
         }
 
         const rawdata = fs.readFileSync(process.argv[process.argv.length - 1]);
-        const config: Config = JSON.parse(rawdata.toString());
+        const config : Config = JSON.parse(rawdata.toString());
 
         console.clear();
         console.log("Make sure you setup your OBS websocket and settings! \n");
 
         while (true) {
-            console.log("Which option do you need? \n");
+            const choice = await inquirer.prompt([
+                {
+                    type: 'list',
+                    name: 'option',
+                    message: 'Which option do you need?',
+                    choices: [
+                        'Create Folders from Challonge bracket', 'Create Folders from Smash.gg bracket', new inquirer.Separator(),
+                        'Filter and setup folder replays',
+                        'Setup and Record Slippi Sessions',
+                        new inquirer.Separator(),
+                        'Upload to Youtube',
+                        new inquirer.Separator(),
+                        'Quit',
+                        new inquirer.Separator()
+                    ]
+                }
+            ]);
 
-            console.log("Folder Generation:");
-            console.log("1: Create Folders from Challonge bracket");
-            console.log("2: Create Folders from Smash.gg bracket \n");
-            console.log("Recording Dolphin:");
-            console.log("3: Filter and setup folder replays");
-            console.log("4: Setup and Record Slippi Sessions \n");
-            console.log("5: Upload to Youtube \n");
+            console.log(choice.option)
 
-            console.log("6: Quit \n");
-
-            const choice = prompt("");
-            switch (choice) {
-                case "1":
+            switch (choice.option) {
+                case "Create Folders from Challonge bracket":
                     await Challonge(config);
                     break;
-                case "2":
+                case "Create Folders from Smash.gg bracket":
                     await SmashGG(config);
                     break;
-                case "3":
+                case "Filter and setup folder replays":
                     await Filter(config);
                     break;
-                case "4":
+                case "Setup and Record Slippi Sessions":
                     console.log("Setting up recording batch files and queues.");
                     await Filter(config);
                     await Record(config);
                     break;
-                case "5":
+                case "Upload to Youtube":
                     console.log("coming soon...");
                     break;
-                case "6":
+                case "Quit":
                     process.exit();
                 default:
-                    console.log("choose a real option...");
                     break;
             }
         }

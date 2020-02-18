@@ -1,14 +1,16 @@
 import OBSWebSocket from "obs-websocket-js";
 import fs from "fs";
 import { join } from "path";
-import { exec, execSync } from "child_process";
-const { default: SlippiGame } = require("slp-parser-js");
+import { exec, execSync, execFile } from "child_process";
+import SlippiGame from "slp-parser-js";
 import ora from "ora";
 import { Config } from ".";
 
 const sleep = (s: number) =>
     new Promise(resolve => setTimeout(resolve, s * 1000));
+
 const obs = new OBSWebSocket();
+
 const BUFFER = 10;
 
 const parseTime = (time: number): string => {
@@ -79,6 +81,17 @@ async function recordSession(config: Config): Promise<boolean> {
     try {
         const DIR = config.DIR;
 
+        console.log("Starting OBS...");
+
+        process.chdir(
+            config.OBS_EXE.split("\\")
+                .slice(0, -1)
+                .join("\\")
+        );
+        execFile(config.OBS_EXE);
+
+        await sleep(3);
+
         await obs.connect({
             address: `localhost:${config.OBS_PORT}`,
             password: config.OBS_PASS,
@@ -86,23 +99,24 @@ async function recordSession(config: Config): Promise<boolean> {
 
         console.log("Connection Opened");
 
-        await obs.send("SetCurrentScene", {
-            "scene-name": config.OBS_SCENE,
-        });
+        await obs.send("SetCurrentScene", { "scene-name": config.OBS_SCENE });
 
         const folders = fs
             .readdirSync(DIR)
             .filter(f => fs.statSync(join(DIR, f)).isDirectory());
 
+        // Create a chain of promises to record each set on OBS
         return folders
             .reduce((tasks, folder, index) => {
                 return tasks.then(async () => {
+                    // Record Set one after another, wait for the previous recording to resolve
+                    // before starting another session
                     console.log(`\n${index + 1} / ${folders.length}`);
                     return record(folder, DIR);
                 });
             }, Promise.resolve(true))
             .then(() => {
-                console.log("Finished all sets!");
+                console.log("Finished all sets! \n");
                 obs.disconnect();
                 return true;
             });
