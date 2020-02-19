@@ -41,33 +41,38 @@ async function uploadAuth(config: Config): Promise<boolean> {
 }
 
 async function uploadVideos(config: Config): Promise<boolean> {
-    const DIR = config.DIR;
-    const folders = fs
-        .readdirSync(DIR)
-        .filter(f => fs.statSync(join(DIR, f)).isDirectory());
+    try {
+        const DIR = config.DIR;
+        const folders = fs
+            .readdirSync(DIR)
+            .filter(f => fs.statSync(join(DIR, f)).isDirectory());
 
-    for (const folder of folders) {
-        const subFolder = `${DIR}\\${folder}`;
-        const files = fs.readdirSync(subFolder);
+        for (const folder of folders) {
+            const subFolder = `${DIR}\\${folder}`;
+            const files = fs.readdirSync(subFolder);
 
-        const video: string[] = files.filter((f: string) => {
-            return outputTypes.some((output: string) => {
-                return f.includes(output);
+            const video: string[] = files.filter((f: string) => {
+                return outputTypes.some((output: string) => {
+                    return f.includes(output);
+                });
             });
-        });
 
-        if (video.length > 0) {
-            const spinner = ora(
-                chalk.green(`\n Uploading ${video[0]} as ${folder}`)
-            ).start();
-            await upload(`${DIR}\\${folder}\\${video}`, folder);
-            spinner.succeed();
-        } else {
-            console.log(chalk.red(`No video can be found in ${folder}`));
+            if (video.length > 0) {
+                const spinner = ora(
+                    chalk.green(`Uploading ${video[0]} as ${folder}`)
+                ).start();
+                await upload(`${DIR}\\${folder}\\${video}`, folder);
+                spinner.succeed();
+            } else {
+                console.log(chalk.red(`No video can be found in ${folder}`));
+            }
         }
+        console.log(chalk.green(`\n Finished uploading all videos`));
+        return true;
+    } catch (error) {
+        console.error(chalk.red(error));
+        return false;
     }
-    console.log(chalk.green(`\n Finished uploading all videos`));
-    return true;
 }
 
 let upload = (video: string, name: string) => {
@@ -78,11 +83,13 @@ let upload = (video: string, name: string) => {
                     // Video title and description
                     snippet: {
                         title: name,
-                        description: "Upload via YouTube API",
+                        description: "Slippi Recordings",
                     },
                     // I don't want to spam my subscribers
                     status: {
-                        privacyStatus: "public",
+                        privacyStatus: "private",
+                        madeForKids: false,
+                        selfDeclaredMadeForKids: false,
                     },
                 },
                 // This is for the callback function
@@ -94,6 +101,10 @@ let upload = (video: string, name: string) => {
                 },
             },
             (err, data) => {
+                if (err) {
+                    console.error(chalk.red(err));
+                    resolve(true);
+                }
                 resolve(true);
             }
         );
