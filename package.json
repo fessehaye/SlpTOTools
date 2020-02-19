@@ -1,6 +1,6 @@
 {
     "name": "slp-recorder",
-    "version": "1.1.0",
+    "version": "1.2.1",
     "description": "Tools for converting slp files to video",
     "main": "./dist/index.js",
     "bin": {
@@ -54,8 +54,6 @@
         "chalk": "^3.0.0",
         "cli-progress": "^2.1.1",
         "cross-fetch": "^3.0.4",
-        "google-auth-library": "^5.9.2",
-        "googleapis": "^47.0.0",
         "graphql": "^14.6.0",
         "inquirer": "^7.0.4",
         "lien": "^3.3.0",
@@ -65,7 +63,6 @@
         "prompt-sync": "^4.2.0",
         "rimraf": "^2.6.3",
         "slp-parser-js": "^2.5.0",
-        "youtube-api": "^2.0.10",
-        "youtube-video-api": "^0.3.7"
+        "youtube-api": "^2.0.10"
     }
 }

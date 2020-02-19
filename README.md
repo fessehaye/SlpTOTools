@@ -85,7 +85,7 @@ Before you start the recording option, make sure OBS is already running!
 -   [x] Add missing typings
 -   [x] Add example images to Readme
 -   [x] Create .env.example
--   [ ] Youtube Integration
+-   [x] Youtube Integration
 -   [x] Changing .env needed to config.json
 -   [x] Making it available via NPM
 -   [x] OBS on record start
