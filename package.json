@@ -58,11 +58,14 @@
         "googleapis": "^47.0.0",
         "graphql": "^14.6.0",
         "inquirer": "^7.0.4",
+        "lien": "^3.3.0",
         "obs-websocket-js": "^3.0.0",
+        "opn": "^6.0.0",
         "ora": "^4.0.3",
         "prompt-sync": "^4.2.0",
         "rimraf": "^2.6.3",
         "slp-parser-js": "^2.5.0",
+        "youtube-api": "^2.0.10",
         "youtube-video-api": "^0.3.7"
     }
 }

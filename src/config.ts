@@ -1,6 +1,7 @@
 import inquirer from "inquirer";
 import chalk from "chalk";
 import fs from "fs";
+import { Config } from ".";
 
 async function config(): Promise<void> {
     const help = await inquirer.prompt([
@@ -57,9 +58,19 @@ async function config(): Promise<void> {
             message: "Challonge API Key:",
             default: "N/A",
         },
+        {
+            name: "client",
+            message: "Youtube Client ID:",
+            default: "N/A",
+        },
+        {
+            name: "secret",
+            message: "Youtube Client ID:",
+            default: "N/A",
+        },
     ]);
 
-    const configJson = {
+    const configJson: Config = {
         DIR: data.directory.split("\\").join("\\"),
         GG_API: data.gg,
         CHALLONGE_API: data.challonge,
@@ -69,6 +80,8 @@ async function config(): Promise<void> {
         OBS_EXE: data.obs_exe.split("\\").join("\\"),
         DOLPHIN: data.dolphin.split("\\").join("\\"),
         ISO: data.iso.split("\\").join("\\"),
+        CLIENT_ID: data.client,
+        CLIENT_SECRET: data.secret,
     };
 
     console.log(

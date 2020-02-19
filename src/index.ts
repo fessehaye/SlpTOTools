@@ -23,7 +23,9 @@ export interface Config {
     OBS_SCENE?: string;
     OBS_PASS?: string;
     OBS_EXE?: string;
-    OBS_BUFFER: number;
+    OBS_BUFFER?: number;
+    CLIENT_ID?: string;
+    CLIENT_SECRET?: string;
 }
 
 async function index(): Promise<void> {
@@ -58,7 +60,7 @@ async function index(): Promise<void> {
                         "Filter and setup folder replays",
                         "Setup and Record Slippi Sessions",
                         new inquirer.Separator(),
-                        "Upload to Youtube",
+                        "Upload to Youtube(Experimental)",
                         new inquirer.Separator(),
                         "Quit",
                         new inquirer.Separator(),
@@ -80,7 +82,8 @@ async function index(): Promise<void> {
                     await Filter(config);
                     await Record(config);
                     break;
-                case "Upload to Youtube":
+                case "Upload to Youtube(Experimental)":
+                    chalk.yellow("Warning still in early stage of release!\n");
                     await Upload(config);
                     break;
                 case "Quit":
