@@ -13,8 +13,19 @@ type EntrantData = {
 };
 
 type Set = {
+    phaseGroupId: number;
     fullRoundText: string;
     slots: EntrantData[];
+};
+
+type Phase = {
+    name: string;
+    id: number;
+};
+
+type PhaseGroup = {
+    phaseId: number;
+    id: number;
 };
 
 type Stats = {
@@ -25,6 +36,14 @@ type Stats = {
 const GET_EVENT_COUNT = gql`
     query eventQuery($slug: String) {
         event(slug: $slug) {
+            phases {
+                name
+                id
+            }
+            phaseGroups {
+                id
+                phaseId
+            }
             sets(sortType: STANDARD, perPage: 20) {
                 pageInfo {
                     total
@@ -40,6 +59,7 @@ const GET_EVENT_SETS = gql`
         event(slug: $slug) {
             sets(sortType: STANDARD, perPage: 20, page: $page) {
                 nodes {
+                    phaseGroupId
                     fullRoundText
                     slots {
                         entrant {
@@ -56,12 +76,14 @@ const formatName = (tag: string): string => {
     return tag.includes("|") ? tag.split("|")[1].trim() : tag;
 };
 
-const createTitle = (set: Set): string => {
+const createTitle = (set: Set, phaseGroupsMap: any): string => {
     const [p1, p2] = [
         formatName(set.slots[0].entrant.name),
         formatName(set.slots[1].entrant.name),
     ];
-    return `${set.fullRoundText} ${p1} vs ${p2}`;
+    return `${phaseGroupsMap[set.phaseGroupId]} - ${
+        set.fullRoundText
+    } - ${p1} vs ${p2}`.replace(/[?]/g, "");
 };
 
 async function createFolders(config: Config): Promise<boolean> {
@@ -106,20 +128,33 @@ async function createFolders(config: Config): Promise<boolean> {
     });
 
     const pageInfo = eventInfo.data.event.sets.pageInfo;
+    const phaseGroups: PhaseGroup[] = eventInfo.data.event.phaseGroups;
+    const phases: Phase[] = eventInfo.data.event.phases;
+    const phasesMap = phases.reduce((prev, curr) => {
+        prev[curr.id] = curr.name;
+        return prev;
+    }, {});
+    const phaseGroupsMap = phaseGroups.reduce((prev, curr) => {
+        prev[curr.id] = phasesMap[curr.phaseId];
+        return prev;
+    }, {});
+
     const { totalPages } = pageInfo;
 
-    const queries = [...new Array(totalPages).keys()].map(index => {
-        return client.query({
+    let sets: Set[] = [];
+
+    for (let index = 0; index < totalPages; index++) {
+        const setData = await client.query({
             query: GET_EVENT_SETS,
             variables: {
                 slug: tournamentSlug,
                 page: index + 1,
             },
         });
-    });
-    const sets: Set[] = (await Promise.all(queries)).reduce((prev, curr) => {
-        return [...prev, ...curr.data.event.sets.nodes];
-    }, []);
+
+        const newSets: Set[] = setData.data.event.sets.nodes;
+        sets = [...sets, ...newSets];
+    }
 
     const stats: Stats = {
         created: 0,
@@ -127,12 +162,13 @@ async function createFolders(config: Config): Promise<boolean> {
     };
 
     spinner.succeed();
+
     const bar = new _cliProgress.Bar({}, _cliProgress.Presets.shades_classic);
     bar.start(sets.length, 0);
 
     for (let i in sets) {
         bar.update(parseInt(i));
-        let title = createTitle(sets[i]);
+        let title = createTitle(sets[i], phaseGroupsMap);
         let folder = path.join(DIR, title);
 
         if (!fs.existsSync(folder)) {
