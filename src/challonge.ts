@@ -20,10 +20,6 @@ async function createFolders(config: Config): Promise<boolean> {
 
     let eventSlug: string;
 
-    if (!config.CHALLONGE_API) {
-        throw Error("Challonge API Key is missing, please add it your config");
-    }
-
     if (!config.CHALLONGE_EVENT) {
         const answers = await inquirer.prompt([
             {
@@ -37,15 +33,14 @@ async function createFolders(config: Config): Promise<boolean> {
         eventSlug = config.CHALLONGE_EVENT;
     }
 
-    const API: string = config.CHALLONGE_API;
     const spinner: ora.Ora = ora("Getting data from challonge... \n").start();
 
     const matchResponse = await axios.get(
-        `https://api.challonge.com/v1/tournaments/${eventSlug}/matches.json?api_key=${API}`
+        `https://align-lby.begin.app/challonge/${eventSlug}`
     );
 
     const partResponse = await axios.get(
-        `https://api.challonge.com/v1/tournaments/${eventSlug}/participants.json?api_key=${API}`
+        `https://align-lby.begin.app/challonge-part/${eventSlug}`
     );
 
     spinner.succeed();
@@ -55,8 +50,8 @@ async function createFolders(config: Config): Promise<boolean> {
         skipped: 0,
     };
 
-    const matches: any[] = await matchResponse.data;
-    const playerData = await partResponse.data;
+    const matches: any[] = matchResponse.data;
+    const playerData = partResponse.data;
     const players = playerData.reduce((acc, curr) => {
         acc[curr.participant.id] = curr.participant.name;
         return acc;
@@ -70,7 +65,7 @@ async function createFolders(config: Config): Promise<boolean> {
         const match = matches[i].match;
         let title = `${formatRound(match.round)} ${
             players[match.player1_id]
-        } vs ${players[match.player2_id]}`;
+        } vs ${players[match.player2_id]}`.replace(/[.?]/g, "");
         let folder = `${DIR}/${title}`;
 
         if (!fs.existsSync(folder)) {

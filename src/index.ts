@@ -15,7 +15,6 @@ export interface Config {
     DIR: string;
     GG_SLUG?: string;
     GG_API?: string;
-    CHALLONGE_API?: string;
     CHALLONGE_EVENT?: string;
     DOLPHIN?: string;
     OBS_PORT?: string;
@@ -30,6 +29,13 @@ export interface Config {
 
 async function index(): Promise<void> {
     try {
+        console.clear();
+        console.log(
+            chalk.blueBright(
+                "For questions or concerns ask @fessehay on twitter!"
+            )
+        );
+
         if (process.argv.length < 3) {
             console.log(chalk.red("Config json is missing"));
             await ConfigGenerator();
@@ -40,10 +46,9 @@ async function index(): Promise<void> {
         );
         const config: Config = JSON.parse(rawdata.toString());
 
-        console.clear();
         console.log(
             chalk.yellow(
-                "Make sure you setup your OBS websocket and settings. \n Make sure you close any instances of OBS and dolphin beforehand. \n"
+                "Make sure you setup your OBS websocket and settings. \nMake sure you close any instances of OBS and dolphin beforehand. \n"
             )
         );
 

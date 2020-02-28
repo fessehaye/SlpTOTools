@@ -83,16 +83,12 @@ const createTitle = (set: Set, phaseGroupsMap: any): string => {
     ];
     return `${phaseGroupsMap[set.phaseGroupId]} - ${
         set.fullRoundText
-    } - ${p1} vs ${p2}`.replace(/[?]/g, "");
+    } - ${p1} vs ${p2}`.replace(/[.?]/g, "");
 };
 
 async function createFolders(config: Config): Promise<boolean> {
     let tournamentSlug: string;
     const DIR: string = config.DIR;
-
-    if (!config.GG_API) {
-        throw Error("Smash.gg API Key is missing please add it your config");
-    }
 
     if (!config.GG_SLUG) {
         const answers = await inquirer.prompt([

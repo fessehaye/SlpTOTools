@@ -49,16 +49,6 @@ async function config(): Promise<void> {
             message: "Dolphin Exe Path:",
         },
         {
-            name: "gg",
-            message: "Smash.gg API Key:",
-            default: "N/A",
-        },
-        {
-            name: "challonge",
-            message: "Challonge API Key:",
-            default: "N/A",
-        },
-        {
             name: "client",
             message: "Youtube Client ID:",
             default: "N/A",
@@ -72,8 +62,6 @@ async function config(): Promise<void> {
 
     const configJson: Config = {
         DIR: data.directory.split("\\").join("\\"),
-        GG_API: data.gg,
-        CHALLONGE_API: data.challonge,
         OBS_PORT: data.obs_port,
         OBS_SCENE: data.obs_scene,
         OBS_PASS: data.obs_pass,
