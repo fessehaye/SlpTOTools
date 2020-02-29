@@ -1,12 +1,11 @@
 import fs from "fs";
 import path from "path";
-import "cross-fetch/polyfill";
-import ApolloClient, { gql } from "apollo-boost";
 import _cliProgress from "cli-progress";
 import ora from "ora";
 import { Config } from ".";
 import inquirer from "inquirer";
 import chalk from "chalk";
+import axios from "axios";
 
 type EntrantData = {
     entrant: { name: string };
@@ -32,45 +31,6 @@ type Stats = {
     created: number;
     skipped: number;
 };
-
-const GET_EVENT_COUNT = gql`
-    query eventQuery($slug: String) {
-        event(slug: $slug) {
-            phases {
-                name
-                id
-            }
-            phaseGroups {
-                id
-                phaseId
-            }
-            sets(sortType: STANDARD, perPage: 20) {
-                pageInfo {
-                    total
-                    totalPages
-                }
-            }
-        }
-    }
-`;
-
-const GET_EVENT_SETS = gql`
-    query eventQuery($slug: String, $page: Int) {
-        event(slug: $slug) {
-            sets(sortType: STANDARD, perPage: 20, page: $page) {
-                nodes {
-                    phaseGroupId
-                    fullRoundText
-                    slots {
-                        entrant {
-                            name
-                        }
-                    }
-                }
-            }
-        }
-    }
-`;
 
 const formatName = (tag: string): string => {
     return tag.includes("|") ? tag.split("|")[1].trim() : tag;
@@ -103,25 +63,13 @@ async function createFolders(config: Config): Promise<boolean> {
         tournamentSlug = config.GG_SLUG;
     }
 
-    const client = new ApolloClient({
-        uri: "https://api.smash.gg/gql/alpha",
-        request: operation => {
-            operation.setContext({
-                headers: {
-                    authorization: `Bearer ${config.GG_API}`,
-                },
-            });
-        },
-    });
-
     const spinner = ora("Getting data from smash.gg... \n").start();
 
-    const eventInfo = await client.query({
-        query: GET_EVENT_COUNT,
-        variables: {
-            slug: tournamentSlug,
-        },
-    });
+    const eventInfo = await axios.get(
+        `https://align-lby.begin.app/gg_info?slug=${encodeURIComponent(
+            tournamentSlug
+        )}`
+    );
 
     const pageInfo = eventInfo.data.event.sets.pageInfo;
     const phaseGroups: PhaseGroup[] = eventInfo.data.event.phaseGroups;
@@ -140,13 +88,11 @@ async function createFolders(config: Config): Promise<boolean> {
     let sets: Set[] = [];
 
     for (let index = 0; index < totalPages; index++) {
-        const setData = await client.query({
-            query: GET_EVENT_SETS,
-            variables: {
-                slug: tournamentSlug,
-                page: index + 1,
-            },
-        });
+        const setData = await axios.get(
+            `https://align-lby.begin.app/gg_set?slug=${encodeURIComponent(
+                tournamentSlug
+            )}&page=${index + 1}`
+        );
 
         const newSets: Set[] = setData.data.event.sets.nodes;
         sets = [...sets, ...newSets];

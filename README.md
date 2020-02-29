@@ -35,7 +35,15 @@ npm install -g slp-recorder
 
 ## Config JSON
 
-Before running the program make sure you create a json file with the following keys. Depending on your needs you might want to skill some variables to be declared. Use the .env.example file as a template and copy the correct values.
+Before running the program make sure you create a json file with the following keys. Depending on your needs you might want to skill some variables to be declared. Use the .example.json file as a template and copy the correct values.
+
+Or you can run:
+
+```
+    slp-recorder
+```
+
+to create a new config.json step by step!
 
 ### Needed for everything
 
@@ -49,13 +57,30 @@ Before running the program make sure you create a json file with the following k
 -   OBS_PASS = Password for obs-websocket
 -   OBS_SCENE = Scene used for OBS recording
 
-### Needed for Smash.gg Folder generation
+### Needed for Youtube Upload
 
--   GG_API = Smash.gg API Key need to request key from smash.gg staff
+-   CLIENT_ID = Youtube client Id
+-   CLIENT_SECRET = Youtube client secret Id
 
-### Needed for challonge Folder generation
+## Getting the smash.gg slug
 
--   CHALLONGE_API = challonge API Key, check account settings on challonge account
+```
+    tournament/<tournament-url>/events/<event-url>
+```
+
+Example: https://smash.gg/tournament/alberta-melee-arcadian-5/events/melee-singles/overview would be tournament/alberta-melee-arcadian-5/event/melee-singles
+
+You can just copy it from the URL and change events to event!
+
+## Getting the challonge slug
+
+```
+    tournament/<tournament-url>/events/<event-url>
+```
+
+Example: https://smash.gg/tournament/alberta-melee-arcadian-5/events/melee-singles/overview would be tournament/alberta-melee-arcadian-5/event/melee-singles
+
+You can just copy it from the URL and change events to event!
 
 ## Setting up the OBS Scene
 
@@ -81,16 +106,5 @@ Before you start the recording option, make sure OBS is already running!
 ## TODO List
 
 -   [ ] Finish Documentation
--   [x] Add enviorment variables to record.ts
--   [x] Add missing typings
--   [x] Add example images to Readme
--   [x] Create .env.example
--   [x] Youtube Integration
--   [x] Changing .env needed to config.json
--   [x] Making it available via NPM
--   [x] OBS on record start
+-   [ ] Refactor Youtube Upload
 -   [ ] Stop restarting dolphin
--   [x] Skip if video is found
--   [x] Config maker
--   [x] import a better cli selector
--   [x] Add config Buffer

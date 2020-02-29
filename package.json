@@ -1,6 +1,6 @@
 {
     "name": "slp-recorder",
-    "version": "1.2.2",
+    "version": "1.3.1",
     "description": "Tools for converting slp files to video",
     "main": "./dist/index.js",
     "bin": {
@@ -14,8 +14,11 @@
     ],
     "keywords": [
         "cli",
-        "slp-recorder",
-        "project slippi",
+        "slp",
+        "slippi",
+        "melee",
+        "smash",
+        "slp-parser-js",
         "obs",
         "challonge",
         "smash.gg"
@@ -46,23 +49,20 @@
         "@types/prompt-sync": "^4.1.0",
         "@types/rimraf": "^2.0.3",
         "ts-node": "^8.6.2",
-        "typescript": "^3.7.5"
+        "typescript": "^3.7.5",
+        "lien": "^3.3.0",
+        "opn": "^6.0.0",
+        "ora": "^4.0.3",
+        "youtube-api": "^2.0.10"
     },
     "dependencies": {
-        "apollo-boost": "^0.4.7",
         "axios": "^0.19.0",
         "chalk": "^3.0.0",
         "cli-progress": "^2.1.1",
-        "cross-fetch": "^3.0.4",
-        "graphql": "^14.6.0",
         "inquirer": "^7.0.4",
-        "lien": "^3.3.0",
         "obs-websocket-js": "^3.0.0",
-        "opn": "^6.0.0",
-        "ora": "^4.0.3",
         "prompt-sync": "^4.2.0",
         "rimraf": "^2.6.3",
-        "slp-parser-js": "^2.5.0",
-        "youtube-api": "^2.0.10"
+        "slp-parser-js": "^2.5.0"
     }
 }

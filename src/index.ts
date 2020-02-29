@@ -5,7 +5,7 @@ import Challonge from "./challonge";
 import Filter from "./filter";
 import Record from "./record";
 import ConfigGenerator from "./config";
-import Upload from "./youtube";
+// import Upload from "./youtube";
 
 import fs from "fs";
 import inquirer from "inquirer";
@@ -14,7 +14,6 @@ import chalk from "chalk";
 export interface Config {
     DIR: string;
     GG_SLUG?: string;
-    GG_API?: string;
     CHALLONGE_EVENT?: string;
     DOLPHIN?: string;
     OBS_PORT?: string;
@@ -65,8 +64,8 @@ async function index(): Promise<void> {
                         "Filter and setup folder replays",
                         "Setup and Record Slippi Sessions",
                         new inquirer.Separator(),
-                        "Upload to Youtube(Experimental)",
-                        new inquirer.Separator(),
+                        // "Upload to Youtube(Experimental)",
+                        // new inquirer.Separator(),
                         "Quit",
                         new inquirer.Separator(),
                     ],
@@ -87,10 +86,10 @@ async function index(): Promise<void> {
                     await Filter(config);
                     await Record(config);
                     break;
-                case "Upload to Youtube(Experimental)":
-                    chalk.yellow("Warning still in early stage of release!\n");
-                    await Upload(config);
-                    break;
+                // case "Upload to Youtube(Experimental)":
+                //     chalk.yellow("Warning still in early stage of release!\n");
+                //     await Upload(config);
+                //     break;
                 case "Quit":
                     process.exit();
                 default:

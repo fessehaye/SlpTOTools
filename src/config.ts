@@ -48,16 +48,16 @@ async function config(): Promise<void> {
             name: "dolphin",
             message: "Dolphin Exe Path:",
         },
-        {
-            name: "client",
-            message: "Youtube Client ID:",
-            default: "N/A",
-        },
-        {
-            name: "secret",
-            message: "Youtube Client ID:",
-            default: "N/A",
-        },
+        // {
+        //     name: "client",
+        //     message: "Youtube Client ID:",
+        //     default: "N/A",
+        // },
+        // {
+        //     name: "secret",
+        //     message: "Youtube Client ID:",
+        //     default: "N/A",
+        // },
     ]);
 
     const configJson: Config = {
@@ -68,8 +68,8 @@ async function config(): Promise<void> {
         OBS_EXE: data.obs_exe.split("\\").join("\\"),
         DOLPHIN: data.dolphin.split("\\").join("\\"),
         ISO: data.iso.split("\\").join("\\"),
-        CLIENT_ID: data.client,
-        CLIENT_SECRET: data.secret,
+        // CLIENT_ID: data.client,
+        // CLIENT_SECRET: data.secret,
     };
 
     console.log(
