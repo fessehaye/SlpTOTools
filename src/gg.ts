@@ -12,19 +12,13 @@ type EntrantData = {
 };
 
 type Set = {
-    phaseGroupId: number;
+    phaseGroup: {
+        phase: {
+            name: string;
+        };
+    };
     fullRoundText: string;
     slots: EntrantData[];
-};
-
-type Phase = {
-    name: string;
-    id: number;
-};
-
-type PhaseGroup = {
-    phaseId: number;
-    id: number;
 };
 
 type Stats = {
@@ -36,14 +30,15 @@ const formatName = (tag: string): string => {
     return tag.includes("|") ? tag.split("|")[1].trim() : tag;
 };
 
-const createTitle = (set: Set, phaseGroupsMap: any): string => {
+const createTitle = (set: Set): string => {
     const [p1, p2] = [
         formatName(set.slots[0].entrant.name),
         formatName(set.slots[1].entrant.name),
     ];
-    return `${phaseGroupsMap[set.phaseGroupId]} - ${
-        set.fullRoundText
-    } - ${p1} vs ${p2}`.replace(/[.?]/g, "");
+    return `${set.phaseGroup.phase.name} - ${set.fullRoundText} - ${p1} vs ${p2}`.replace(
+        /[.?]/g,
+        ""
+    );
 };
 
 async function createFolders(config: Config): Promise<boolean> {
@@ -72,16 +67,6 @@ async function createFolders(config: Config): Promise<boolean> {
     );
 
     const pageInfo = eventInfo.data.event.sets.pageInfo;
-    const phaseGroups: PhaseGroup[] = eventInfo.data.event.phaseGroups;
-    const phases: Phase[] = eventInfo.data.event.phases;
-    const phasesMap = phases.reduce((prev, curr) => {
-        prev[curr.id] = curr.name;
-        return prev;
-    }, {});
-    const phaseGroupsMap = phaseGroups.reduce((prev, curr) => {
-        prev[curr.id] = phasesMap[curr.phaseId];
-        return prev;
-    }, {});
 
     const { totalPages } = pageInfo;
 
@@ -110,7 +95,7 @@ async function createFolders(config: Config): Promise<boolean> {
 
     for (let i in sets) {
         bar.update(parseInt(i));
-        let title = createTitle(sets[i], phaseGroupsMap);
+        let title = createTitle(sets[i]);
         let folder = path.join(DIR, title);
 
         if (!fs.existsSync(folder)) {
