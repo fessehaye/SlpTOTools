@@ -70,12 +70,12 @@ You can just copy it from the URL and change events to event!
 ## Getting the challonge slug
 
 ```
-    tournament/<tournament-url>/events/<event-url>
+    https://challonge.com/<slug-copy-this-part>
 ```
 
-Example: https://smash.gg/tournament/alberta-melee-arcadian-5/events/melee-singles/overview would be tournament/alberta-melee-arcadian-5/event/melee-singles
+Example: https://challonge.com/bauybnpp would be bauybnpp
 
-You can just copy it from the URL and change events to event!
+You can just copy it from the URL.
 
 ## Setting up the OBS Scene
 
