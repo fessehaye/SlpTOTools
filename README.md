@@ -57,11 +57,6 @@ to create a new config.json step by step!
 -   OBS_PASS = Password for obs-websocket
 -   OBS_SCENE = Scene used for OBS recording
 
-### Needed for Youtube Upload
-
--   CLIENT_ID = Youtube client Id
--   CLIENT_SECRET = Youtube client secret Id
-
 ## Getting the smash.gg slug
 
 ```
