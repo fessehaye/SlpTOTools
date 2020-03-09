@@ -62,6 +62,10 @@ export async function record(
             "rec-folder": `${DIR}\\${folder}\\`,
         });
 
+        await obs.send("SetFilenameFormatting", {
+            "filename-formatting": `${folder}`,
+        });
+
         exec(file);
         await obs.send("StartRecording");
 
@@ -90,16 +94,27 @@ async function recordSession(config: Config): Promise<boolean> {
         const DIR = config.DIR;
         const BUFFER = config.OBS_BUFFER | 10;
 
-        console.log("Starting OBS...");
-
         process.chdir(
             config.OBS_EXE.split("\\")
                 .slice(0, -1)
                 .join("\\")
         );
-        execFile(config.OBS_EXE);
 
-        await sleep(3);
+        let isOBSon = execSync("tasklist /FO CSV")
+            .toString()
+            .includes("obs");
+
+        if (!isOBSon) {
+            console.log("Starting OBS...");
+            execFile(config.OBS_EXE);
+        }
+
+        while (!isOBSon) {
+            await sleep(3);
+            isOBSon = execSync("tasklist /FO CSV")
+                .toString()
+                .includes("obs");
+        }
 
         await obs.connect({
             address: `localhost:${config.OBS_PORT}`,
