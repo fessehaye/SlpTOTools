@@ -8,7 +8,7 @@ async function config(): Promise<void> {
         {
             type: "list",
             name: "answer",
-            message: chalk.blue("Do you want to create a config file?"),
+            message: chalk.bold("Do you want to create a config file?"),
             choices: ["YES", "NO"],
         },
     ]);

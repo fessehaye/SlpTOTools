@@ -30,9 +30,7 @@ async function index(): Promise<void> {
     try {
         console.clear();
         console.log(
-            chalk.blueBright(
-                "For questions or concerns ask @fessehay on twitter!"
-            )
+            chalk.bold("For questions or concerns ask @fessehay on twitter!")
         );
 
         if (process.argv.length < 3) {
@@ -56,7 +54,7 @@ async function index(): Promise<void> {
                 {
                     type: "list",
                     name: "option",
-                    message: chalk.blue("Which option do you need?"),
+                    message: chalk.bold("Which option do you need?"),
                     choices: [
                         "Create Folders from Challonge bracket",
                         "Create Folders from Smash.gg bracket",

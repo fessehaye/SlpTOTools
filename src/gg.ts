@@ -49,7 +49,7 @@ async function createFolders(config: Config): Promise<boolean> {
         const answers = await inquirer.prompt([
             {
                 name: "slug",
-                message: chalk.blue("Please provide Smash.gg Event Slug:"),
+                message: chalk.bold("Please provide Smash.gg Event Slug:"),
             },
         ]);
 

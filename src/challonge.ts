@@ -24,7 +24,7 @@ async function createFolders(config: Config): Promise<boolean> {
         const answers = await inquirer.prompt([
             {
                 name: "slug",
-                message: chalk.blue("Please provide Challonge Event Slug:"),
+                message: chalk.bold("Please provide Challonge Event Slug:"),
             },
         ]);
 
