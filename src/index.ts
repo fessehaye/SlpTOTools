@@ -11,6 +11,7 @@ import SimpleFolder from "./simpleFolder";
 import fs from "fs";
 import inquirer from "inquirer";
 import chalk from "chalk";
+import opn from "opn";
 
 export interface Config {
     DIR: string;
@@ -66,6 +67,7 @@ async function index(): Promise<void> {
                         new inquirer.Separator(),
                         // "Upload to Youtube(Experimental)",
                         // new inquirer.Separator(),
+                        "Help",
                         "Quit",
                         new inquirer.Separator(),
                     ],
@@ -93,6 +95,11 @@ async function index(): Promise<void> {
                 //     chalk.yellow("Warning still in early stage of release!\n");
                 //     await Upload(config);
                 //     break;
+                case "Help":
+                    opn(
+                        "https://github.com/fessehaye/SlpTOTools/blob/master/README.md"
+                    );
+                    break;
                 case "Quit":
                     process.exit();
                 default:
