@@ -5,6 +5,7 @@ import Challonge from "./challonge";
 import Filter from "./filter";
 import Record from "./record";
 import ConfigGenerator from "./config";
+import SimpleFolder from "./simpleFolder";
 // import Upload from "./youtube";
 
 import fs from "fs";
@@ -56,8 +57,9 @@ async function index(): Promise<void> {
                     name: "option",
                     message: chalk.bold("Which option do you need?"),
                     choices: [
-                        "Create Folders from Challonge bracket",
-                        "Create Folders from Smash.gg bracket",
+                        "Create folders from Challonge bracket",
+                        "Create folders from Smash.gg bracket",
+                        "Create folders manually",
                         new inquirer.Separator(),
                         "Filter and setup folder replays",
                         "Setup and Record Slippi Sessions",
@@ -71,11 +73,14 @@ async function index(): Promise<void> {
             ]);
 
             switch (choice.option) {
-                case "Create Folders from Challonge bracket":
+                case "Create folders from Challonge bracket":
                     await Challonge(config);
                     break;
-                case "Create Folders from Smash.gg bracket":
+                case "Create folders from Smash.gg bracket":
                     await SmashGG(config);
+                    break;
+                case "Create folders manually":
+                    await SimpleFolder(config);
                     break;
                 case "Filter and setup folder replays":
                     await Filter(config);
