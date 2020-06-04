@@ -1,6 +1,6 @@
 {
     "name": "slp-recorder",
-    "version": "1.4.5",
+    "version": "1.4.6",
     "description": "Tools for converting slp files to video",
     "main": "./dist/index.js",
     "bin": {

@@ -1,6 +1,8 @@
 import inquirer from "inquirer";
 import chalk from "chalk";
 import fs from "fs";
+import os from "os";
+import { join } from "path";
 import { Config } from ".";
 
 async function config(): Promise<void> {
@@ -9,8 +11,8 @@ async function config(): Promise<void> {
             type: "list",
             name: "answer",
             message: chalk.bold("Do you want to create a config file?"),
-            choices: ["YES", "NO"],
-        },
+            choices: ["YES", "NO"]
+        }
     ]);
 
     if (help.answer === "NO") {
@@ -21,33 +23,52 @@ async function config(): Promise<void> {
         {
             name: "directory",
             message: "Target Directory:",
-        },
-        {
-            name: "obs_exe",
-            message: "OBS Exe Path:",
-        },
-        {
-            name: "obs_port",
-            message: "OBS Websocket Port:",
-            default: "4444",
-        },
-        {
-            name: "obs_pass",
-            message: "OBS Websocket Password:",
-        },
-        {
-            name: "obs_scene",
-            message: "OBS Scene being used for recording:",
-            default: "Slippi",
-        },
-        {
-            name: "iso",
-            message: "Melee ISO Path:",
+            default: process.cwd()
         },
         {
             name: "dolphin",
             message: "Dolphin Exe Path:",
+            default: join(
+                os.homedir(),
+                "AppData",
+                "Roaming",
+                "Slippi Desktop App",
+                "dolphin",
+                "Dolphin.exe"
+            )
         },
+        {
+            name: "iso",
+            message: "Melee ISO Path:",
+            default: join(process.cwd(), "game.iso")
+        },
+        {
+            name: "obs_exe",
+            message: "OBS Exe Path:",
+            default: join(
+                "C:",
+                "Program Files",
+                "obs-studio",
+                "bin",
+                "64bit",
+                "obs64.exe"
+            )
+        },
+        {
+            name: "obs_port",
+            message: "OBS Websocket Port:",
+            default: "4444"
+        },
+        {
+            name: "obs_pass",
+            message: "OBS Websocket Password:",
+            default: "slippi"
+        },
+        {
+            name: "obs_scene",
+            message: "OBS Scene being used for recording:",
+            default: "Slippi"
+        }
         // {
         //     name: "client",
         //     message: "Youtube Client ID:",
@@ -67,7 +88,7 @@ async function config(): Promise<void> {
         OBS_PASS: data.obs_pass,
         OBS_EXE: data.obs_exe.split("\\").join("\\"),
         DOLPHIN: data.dolphin.split("\\").join("\\"),
-        ISO: data.iso.split("\\").join("\\"),
+        ISO: data.iso.split("\\").join("\\")
         // CLIENT_ID: data.client,
         // CLIENT_SECRET: data.secret,
     };
