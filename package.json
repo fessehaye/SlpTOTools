@@ -51,7 +51,7 @@
         "ts-node": "^8.6.2",
         "typescript": "^3.7.5",
         "lien": "^3.3.0",
-        "youtube-api": "^2.0.10"
+        "youtube-api": "^3.0.1"
     },
     "dependencies": {
         "axios": "^0.21.1",
